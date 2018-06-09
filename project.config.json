@@ -10,6 +10,7 @@
 		"minified": true,
 		"newFeature": true
 	},
+  "client": "./client",
 	"compileType": "miniprogram",
 	"libVersion": "2.0.9",
 	"appid": "wxf24021ee5df00f30",
