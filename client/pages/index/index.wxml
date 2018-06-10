@@ -6,18 +6,10 @@
             </swiper-item>
         </block>
     </swiper>
-    <view class="search">
-        <navigator url="search/search">
-            <view class="search-text">
-                <icon class="weui-icon-search_in-box search-icon" type="search" size="14"></icon>
-                搜 索
-            </view>
-        </navigator>
-    </view>
     <view class="newest">
         <view class="newest-box">
-            <view wx:for="{{selectedList}}" class="newest-list">
-                <navigator url="details">
+            <view wx:for="{{selectedList}}" wx:key="{{index}}" class="newest-list">
+                <navigator url="../details/details?id={{item.id}}&price={{item.price}}">
                     <image src="{{item.url}}"></image>
                     <view class="newest-text"><text>{{item.name}}</text></view>
                     <view class="newest-text"><text>￥ {{item.price}}</text></view>
