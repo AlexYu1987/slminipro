@@ -9,7 +9,7 @@ const sequelize = new Sequelize({
   //mysql configuration
 });
 
-const User = sequelize.define('user', {
+exports.User = sequelize.define('user', {
   'id': {
     'type': Sequelize.UUID,
     'primaryKey': true,
@@ -38,17 +38,15 @@ const User = sequelize.define('user', {
     }
   },
   'addressID': {
-    'type': Sequelize.STRING,
+    'type': Sequelize.UUID,
     'references': {
       'model': Address,
       'key': 'id'
     }
   }
-}, {
-  'tableName': 'user'
-});
+  });
 
-const Address = sequelize.define('address', {
+exports.Address = sequelize.define('address', {
   'id': {
     'type': Sequelize.UUID,
     'primaryKey': true,
@@ -59,7 +57,7 @@ const Address = sequelize.define('address', {
     'allowNull': false
   },
   'gender': {
-    'type': Sequelize.ENUM('value 1', 'value 2'),
+    'type': Sequelize.ENUM('male', 'female'),
     'allowNull': false
   },
   'province': {
@@ -78,7 +76,130 @@ const Address = sequelize.define('address', {
     'type': Sequelize.STRING,
     'allowNull': false
   }
-},{
-  'tableName': 'address'
+  });
+
+exports.Order = sequelize.define('order', {
+  'id': {
+    'type': Sequelize.UUID,
+    'primaryKey': true,
+    'defaultValue': Sequelize.UUIDV1
+  },
+  'userID': {
+    'type': Sequelize.UUID,
+    'references': {
+      'model': User,
+      'key': 'id'
+    }
+  },
+  'status': {
+    'type': Sequelize.ENUM('waitting', 'processing', 'completing'),
+    'allowNull': false,
+    'defaultValue': 'waitting'
+  },
+  'isSF': {
+    'type': Sequelize.BOOLEAN,
+    'defaultValue': false
+  },
+  'note': Sequelize.TEXT,
+  'expressID': {
+    'type': Sequelize.UUID,
+    'references': {
+      'model': Express,
+      'key': 'id'
+    }
+  },
+  'addressID': {
+    'type': Sequelize.UUID,
+    'references': {
+      'model': Address,
+      'key': 'id'
+    }
+  }
 });
+
+exports.Express = sequelize.define('Express', {
+  'id': {
+    'type': Sequelize.UUID,
+    'primaryKey': true,
+    'defauleValue': Sequelize.UUIDV1
+  },
+  'company': {
+    'type': Sequelize.STRING,
+    'allowNull': false
+  },
+  'number': {
+    'type': Sequelize.STRING,
+    'allowNull': false
+  },
+  'fee': {
+    'type': Sequelize.FLOAT,
+    'allowNull': false
+  },
+  'orderID': {
+    'type': Sequelize.UUID,
+    'references': {
+      'model': Order,
+      'key': 'id'
+    }
+  }
+});
+
+exports.Commodity = sequelize.define('commodity', {
+  'id': {
+    'type': Sequelize.UUID,
+    'primaryKey': true,
+    'defaultValue': Sequelize.UUIDV1
+  },
+  'bigPic': Sequelize.STRING,
+  'smallPic': Sequelize.STRING,
+  'name': {
+    'type': Sequelize.STRING,
+    'allowNull': false
+  },
+  'discription': Sequelize.TEXT,
+  'param': Sequelize.TEXT,
+  'ensure': Sequelize.TEXT,
+  'price': {
+    'type': Sequelize.FLOAT,
+    'allowNull': false
+  }
+});
+
+exports.Details = sequelize.define('details', {
+  'id': {
+    'type': Sequelize.UUID,
+    'primaryKey': true,
+    'defaultValue': Sequelize.UUIDV1
+  },
+  'orderID': {
+    'type': Sequelize.UUID,
+    'references': {
+      'model': Order,
+      'key': 'id'
+    }
+  },
+  'commodityID': {
+    'type': Sequelize.UUID,
+    'references': {
+      'model': Commodity,
+      'key': 'id'
+    }
+  },
+  'count': {
+    'type': Sequelize.INTEGER,
+    'allowNull': false,
+    'validate': {
+      min: 1
+    }
+  }
+});
+
+//define associations
+User.hasOne(Address);
+User.hasMany(Order);
+Order.hasOne(Address);
+Order.hasOne(Express);
+Express.hasOne(Order);
+Order.hasMany(Details);
+Details.hasOne(Commodity);
 
