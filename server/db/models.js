@@ -53,7 +53,32 @@ const Address = sequelize.define('address', {
     'type': Sequelize.UUID,
     'primaryKey': true,
     'defaultValue': Sequelize.UUIDV1
+  },
+  'name': {
+    'type': Sequelize.STRING,
+    'allowNull': false
+  },
+  'gender': {
+    'type': Sequelize.ENUM('value 1', 'value 2'),
+    'allowNull': false
+  },
+  'province': {
+    'type': Sequelize.STRING,
+    'allowNull': false
+  },
+  'city': {
+    'type': Sequelize.STRING,
+    'allowNull': false
+  },
+  'street': {
+    'type': Sequelize.STRING,
+    'allowNull': false
+  },
+  'phone': {
+    'type': Sequelize.STRING,
+    'allowNull': false
   }
 },{
   'tableName': 'address'
-})
+});
+
