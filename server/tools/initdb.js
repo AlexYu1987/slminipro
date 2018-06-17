@@ -39,4 +39,4 @@ DB.raw(content).then(res => {
     process.exit(0)
 }, err => {
     throw new Error(err)
-})
+});
