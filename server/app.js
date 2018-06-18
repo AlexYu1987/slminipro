@@ -20,12 +20,9 @@ app.listen(config.port, () => debug(`listening on port ${config.port}`))
 
 //Build order system's database
 const Sequelize = require('sequelize')
-const sequelize = new Sequelize(config.db, config.user, config.pass, {
-    dialect: 'mysql',
-    host: config.host,
-    port: config.port
+const sequelize = new Sequelize(config.mysql.db, config.mysql.user, config.mysql.pass, {
+    dialect: 'mysql'
   })
 
-const Models = require('./db/models')
-mo = Models(sequelize, Sequelize, config);
-mo.buildTable();
+const models = require('./db/models')(sequelize, Sequelize);
+sequelize.sync();

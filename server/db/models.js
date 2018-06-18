@@ -3,8 +3,8 @@
  * Created by: Alex.Y (6/13/2018)
  */
 
-module.exports = (sequelize, Sequelize) => {
-  if (arguments.length < 3) throw new Error('arguments can not less 3.')
+module.exports = function(sequelize, Sequelize) {
+  if (arguments.length < 2) throw new Error('arguments can not less 3.')
 
   this.Address = sequelize.define('address', {
     'id': {
@@ -64,16 +64,16 @@ module.exports = (sequelize, Sequelize) => {
         'min': 0,
         'max': 1
       }
-    },
-    'addressID': {
-      'type': Sequelize.UUID,
-      'references': {
-        'model': this.Address,
-        'key': 'id'
-      }
-    }});
+    }
+    // 'addressId': {
+    //   'type': Sequelize.UUID,
+    //   'references': {
+    //     'model': this.Address,
+    //     'key': 'id'
+    //   }
+    });
 
-  exports.Express = sequelize.define('Express', {
+  this.Express = sequelize.define('Express', {
     'id': {
       'type': Sequelize.UUID,
       'primaryKey': true,
@@ -90,14 +90,14 @@ module.exports = (sequelize, Sequelize) => {
     'fee': {
       'type': Sequelize.FLOAT,
       'allowNull': false
-    },
-    'orderID': {
-      'type': Sequelize.UUID,
-      'references': {
-        'model': this.Order,
-        'key': 'id'
-      }
     }
+    // 'orderId': {
+    //   'type': Sequelize.UUID,
+    //   'references': {
+    //     'model': this.Order,
+    //     'key': 'id'
+    //   }
+    // }
   });
 
   this.Commodity = sequelize.define('commodity', {
@@ -127,20 +127,20 @@ module.exports = (sequelize, Sequelize) => {
       'primaryKey': true,
       'defaultValue': Sequelize.UUIDV1
     },
-    'orderID': {
-      'type': Sequelize.UUID,
-      'references': {
-        'model': this.Order,
-        'key': 'id'
-      }
-    },
-    'commodityID': {
-      'type': Sequelize.UUID,
-      'references': {
-        'model': this.Commodity,
-        'key': 'id'
-      }
-    },
+    // 'orderId': {
+    //   'type': Sequelize.UUID,
+    //   'references': {
+    //     'model': this.Order,
+    //     'key': 'id'
+    //   }
+    // },
+    // 'commodityId': {
+    //   'type': Sequelize.UUID,
+    //   'references': {
+    //     'model': this.Commodity,
+    //     'key': 'id'
+    //   }
+    // },
     'count': {
       'type': Sequelize.INTEGER,
       'allowNull': false,
@@ -156,13 +156,13 @@ module.exports = (sequelize, Sequelize) => {
       'primaryKey': true,
       'defaultValue': Sequelize.UUIDV1
     },
-    'userID': {
-      'type': Sequelize.UUID,
-      'references': {
-        'model': this.User,
-        'key': 'id'
-      }
-    },
+    // 'userId': {
+    //   'type': Sequelize.UUID,
+    //   'references': {
+    //     'model': this.User,
+    //     'key': 'id'
+    //   }
+    // },
     'status': {
       'type': Sequelize.ENUM('waitting', 'processing', 'completing'),
       'allowNull': false,
@@ -172,21 +172,21 @@ module.exports = (sequelize, Sequelize) => {
       'type': Sequelize.BOOLEAN,
       'defaultValue': false
     },
-    'note': Sequelize.TEXT,
-    'expressID': {
-      'type': Sequelize.UUID,
-      'references': {
-        'model': this.Express,
-        'key': 'id'
-      }
-    },
-    'addressID': {
-      'type': Sequelize.UUID,
-      'references': {
-        'model': this.Address,
-        'key': 'id'
-      }
-    }
+    'note': Sequelize.TEXT
+    // 'expressId': {
+    //   'type': Sequelize.UUID,
+    //   'references': {
+    //     'model': this.Express,
+    //     'key': 'id'
+    //   }
+    // },
+    // 'addressId': {
+    //   'type': Sequelize.UUID,
+    //   'references': {
+    //     'model': this.Address,
+    //     'key': 'id'
+    //   }
+    // }
   });
 
   //define associations
@@ -194,7 +194,6 @@ module.exports = (sequelize, Sequelize) => {
   this.User.hasMany(this.Order)
   this.Order.hasOne(this.Address)
   this.Order.hasOne(this.Express)
-  this.Express.hasOne(this.Order)
   this.Order.hasMany(this.Details)
   this.Details.hasOne(this.Commodity)
 
