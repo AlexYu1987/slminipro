@@ -1,6 +1,9 @@
+const qcloud = require('./vendor/wafer2-client-sdk/index')
+const config = require('./config')
+
 App({
   onLaunch: function () {
-    console.log('App Launch')
+    qcloud.setLoginUrl(config.service.loginUrl)
   },
   onShow: function () {
     console.log('App Show')

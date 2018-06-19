@@ -1,3 +1,13 @@
+/*
+ * index page controller
+ * Created by: Alex.Y
+ * From 2018/6/19
+ */
+
+const qcloud = require('../../vendor/wafer2-client-sdk/index')
+const config = require('../../config')
+const util = require('../../utils/util')
+
 Page({
   data: {
     imgUrls: [
@@ -40,5 +50,47 @@ Page({
     autoplay: false,
     interval: 3000,
     duration: 800,
-  }
+  },
+
+  onReady: () => {
+    //util.showBusy('正在登录')
+   
+    // 调用登录接口
+    (function(that){
+        qcloud.login({
+          success(result) {
+            if (result) {
+              util.showSuccess('登录成功')
+              that.setData({
+                userInfo: result,
+                logged: true
+              })
+            } else {
+              // 如果不是首次登录，不会返回用户信息，请求用户信息接口获取
+              qcloud.request({
+                url: config.service.requestUrl,
+                login: true,
+                success(result) {
+                  util.showSuccess('登录成功')
+                  that.setData({
+                    userInfo: result.data.data,
+                    logged: true
+                  })
+                },
+
+                fail(error) {
+                  util.showModel('请求失败', error)
+                  console.log('request fail', error)
+                }
+              })
+            }
+          },
+
+          fail(error) {
+            util.showModel('登录失败', error)
+            console.log('登录失败', error)
+          }
+        })
+    })(this)
+  } 
 })

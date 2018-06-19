@@ -17,12 +17,3 @@ app.use(router.routes())
 
 // 启动程序，监听端口
 app.listen(config.port, () => debug(`listening on port ${config.port}`))
-
-//Build order system's database
-const Sequelize = require('sequelize')
-const sequelize = new Sequelize(config.mysql.db, config.mysql.user, config.mysql.pass, {
-    dialect: 'mysql'
-  })
-
-const models = require('./db/models')(sequelize, Sequelize);
-sequelize.sync();
