@@ -20,28 +20,28 @@ Page({
       name: "蛋黄酥",
       url: "/images/s4.png",
       price: 30
-    },{
+    }, {
       id: 102,
       name: "牛轧糖",
       url: "/images/s5.png",
       price: 25
-    },{
+    }, {
       id: 100,
       name: "黑森林蛋糕",
       url: "/images/s6.png",
       price: 26
-    },{
+    }, {
       id: 120,
       name: "榴莲班戟",
-      url:"/images/s6.png",
-      price:56
-    },{
-      id:150,
+      url: "/images/s6.png",
+      price: 56
+    }, {
+      id: 150,
       name: "蛋黄酥",
       url: "/images/s4.png",
       price: 30
     }, {
-      id:101,
+      id: 101,
       name: "牛轧糖",
       url: "/images/s5.png",
       price: 25
@@ -52,45 +52,46 @@ Page({
     duration: 800,
   },
 
-  onReady: () => {
-    //util.showBusy('正在登录')
-   
-    // 调用登录接口
-    (function(that){
-        qcloud.login({
-          success(result) {
-            if (result) {
-              util.showSuccess('登录成功')
-              that.setData({
-                userInfo: result,
-                logged: true
-              })
-            } else {
-              // 如果不是首次登录，不会返回用户信息，请求用户信息接口获取
-              qcloud.request({
-                url: config.service.requestUrl,
-                login: true,
-                success(result) {
-                  util.showSuccess('登录成功')
-                  that.setData({
-                    userInfo: result.data.data,
-                    logged: true
-                  })
-                },
+  onLoad: function () {
+    util.showBusy('正在登录')
+    var that = this
 
-                fail(error) {
-                  util.showModel('请求失败', error)
-                  console.log('request fail', error)
-                }
-              })
-            }
-          },
+    if (!this.data.logged) {
+      // 调用登录接口
+      qcloud.login({
+        success(result) {
+          if (result) {
+            util.showSuccess('登录成功')
+            that.setData({
+              userInfo: result,
+              logged: true
+            })
+          } else {
+            // 如果不是首次登录，不会返回用户信息，请求用户信息接口获取
+            qcloud.request({
+              url: config.service.requestUrl,
+              login: true,
+              success(result) {
+                util.showSuccess('登录成功')
+                that.setData({
+                  userInfo: result.data.data,
+                  logged: true
+                })
+              },
 
-          fail(error) {
-            util.showModel('登录失败', error)
-            console.log('登录失败', error)
+              fail(error) {
+                util.showModel('请求失败', error)
+                console.log('request fail', error)
+              }
+            })
           }
-        })
-    })(this)
-  } 
+        },
+
+        fail(error) {
+          util.showModel('登录失败', error)
+          console.log('登录失败', error)
+        }
+      })
+    }
+  }
 })
