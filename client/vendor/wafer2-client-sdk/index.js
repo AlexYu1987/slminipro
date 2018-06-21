@@ -6,11 +6,11 @@ var Tunnel = require('./lib/tunnel');
 
 var exports = module.exports = {
     login: login.login,
+    loginWithCode: login.loginWithCode,
     setLoginUrl: login.setLoginUrl,
-    LoginError: login.LoginError,
 
+    Session,
     clearSession: Session.clear,
-    Session: Session,
 
     request: request.request,
     RequestError: request.RequestError,

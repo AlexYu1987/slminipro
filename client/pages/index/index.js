@@ -6,7 +6,7 @@
 
 const qcloud = require('../../vendor/wafer2-client-sdk/index')
 const config = require('../../config')
-const util = require('../../utils/util')
+const {showBusy, showSuccess, showModal} = require('../../utils/util')
 
 Page({
   data: {
@@ -54,41 +54,36 @@ Page({
 
   onLoad: function () {
     let self = this;
-    util.showBusy('正在登录')
+    showBusy('正在登录')
+    //qcloud.clearSession()
+    const session = qcloud.Session.get()
 
-    qcloud.login({
-      success(result) {
-        if (result) {
-          util.showSuccess('登录成功')
-          that.setData({
-            userInfo: result,
-            logged: true
-          })
-        } else {
-          // 如果不是首次登录，不会返回用户信息，请求用户信息接口获取
-          qcloud.request({
-            url: config.service.requestUrl,
-            login: true,
-            success(result) {
-              util.showSuccess('登录成功')
-              that.setData({
-                userInfo: result.data.data,
-                logged: true
-              })
-            },
-
-            fail(error) {
-              util.showModel('请求失败', error)
-              console.log('request fail', error)
-            }
-          })
+    if (session) {
+      // 第二次登录
+      // 或者本地已经有登录态
+      // 可使用本函数更新登录态
+      qcloud.loginWithCode({
+        success: res => {
+          this.setData({ userInfo: res, logged: true })
+          showSuccess('登录成功')
+        },
+        fail: err => {
+          console.error(err)
+          showModal('登录错误', err.message)
         }
-      },
-
-      fail(error) {
-        util.showModel('登录失败', error)
-        console.log('登录失败', error)
-      }
-    })
+      })
+    } else {
+      // 首次登录
+      qcloud.login({
+        success: res => {
+          this.setData({ userInfo: res, logged: true })
+          showSuccess('登录成功')
+        },
+        fail: err => {
+          console.error(err)
+          showModal('登录错误', err.message)
+        }
+      })
+    }
   }
 })
