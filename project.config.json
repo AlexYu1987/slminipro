@@ -11,9 +11,9 @@
 		"newFeature": true
 	},
 	"miniprogramRoot": "./client",
-  "qcloudRoot": "./server",
+	"qcloudRoot": "./server",
 	"compileType": "miniprogram",
-	"libVersion": "2.0.9",
+	"libVersion": "2.1.0",
 	"appid": "wxf24021ee5df00f30",
 	"projectname": "orderSystem",
 	"isGameTourist": false,

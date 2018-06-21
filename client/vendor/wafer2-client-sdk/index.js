@@ -10,6 +10,7 @@ var exports = module.exports = {
     LoginError: login.LoginError,
 
     clearSession: Session.clear,
+    Session: Session,
 
     request: request.request,
     RequestError: request.RequestError,

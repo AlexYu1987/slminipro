@@ -42,17 +42,9 @@ const Address = sequelize.define('address', {
 });
 
 const User = sequelize.define('user', {
-  'id': {
-    'type': Sequelize.UUID,
+  'openId': {
+    'type': Sequelize.STRING(100),
     'primaryKey': true,
-    'defaultValue': Sequelize.UUIDV1
-  },
-  'nickname': {
-    'type': Sequelize.STRING,
-    'allowNull': false
-  },
-  'openID': {
-    'type': Sequelize.STRING,
   },
   'balance': {
     'type': Sequelize.FLOAT,
@@ -68,16 +60,15 @@ const User = sequelize.define('user', {
       'min': 0,
       'max': 1
     }
+  },
+  'role': {
+    'type': Sequelize.ENUM('visitor', 'user', 'admin'),
+    'defaultValue': 'visitor'
   }
-  // 'addressId': {
-  //   'type': Sequelize.UUID,
-  //   'references': {
-  //     'model': this.Address,
-  //     'key': 'id'
-  //   }
+
 });
 
-const Express = sequelize.define('Express', {
+const Express = sequelize.define('express', {
   'id': {
     'type': Sequelize.UUID,
     'primaryKey': true,
@@ -95,13 +86,6 @@ const Express = sequelize.define('Express', {
     'type': Sequelize.FLOAT,
     'allowNull': false
   }
-  // 'orderId': {
-  //   'type': Sequelize.UUID,
-  //   'references': {
-  //     'model': this.Order,
-  //     'key': 'id'
-  //   }
-  // }
 });
 
 const Commodity = sequelize.define('commodity', {
@@ -131,20 +115,6 @@ const Details = sequelize.define('details', {
     'primaryKey': true,
     'defaultValue': Sequelize.UUIDV1
   },
-  // 'orderId': {
-  //   'type': Sequelize.UUID,
-  //   'references': {
-  //     'model': this.Order,
-  //     'key': 'id'
-  //   }
-  // },
-  // 'commodityId': {
-  //   'type': Sequelize.UUID,
-  //   'references': {
-  //     'model': this.Commodity,
-  //     'key': 'id'
-  //   }
-  // },
   'count': {
     'type': Sequelize.INTEGER,
     'allowNull': false,
@@ -160,13 +130,6 @@ const Order = sequelize.define('order', {
     'primaryKey': true,
     'defaultValue': Sequelize.UUIDV1
   },
-  // 'userId': {
-  //   'type': Sequelize.UUID,
-  //   'references': {
-  //     'model': this.User,
-  //     'key': 'id'
-  //   }
-  // },
   'status': {
     'type': Sequelize.ENUM('waitting', 'processing', 'completing'),
     'allowNull': false,
@@ -177,20 +140,6 @@ const Order = sequelize.define('order', {
     'defaultValue': false
   },
   'note': Sequelize.TEXT
-  // 'expressId': {
-  //   'type': Sequelize.UUID,
-  //   'references': {
-  //     'model': this.Express,
-  //     'key': 'id'
-  //   }
-  // },
-  // 'addressId': {
-  //   'type': Sequelize.UUID,
-  //   'references': {
-  //     'model': this.Address,
-  //     'key': 'id'
-  //   }
-  // }
 });
 
 //define associations
@@ -201,7 +150,8 @@ Order.hasOne(Express)
 Order.hasMany(Details)
 Details.hasOne(Commodity)
 
-module.exports = {User, Address, Express, Commodity, Order, Details,
+module.exports = {
+  User, Address, Express, Commodity, Order, Details,
   buildAll: () => sequelize.sync(),
   rebuildAll: () => sequelize.sync({ force: true })
 }

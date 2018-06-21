@@ -14,6 +14,11 @@
             <view>{{address.detail}}</view>
         </view>
     </view>
+    <view wx:if="true" class="address-box">
+      <view class="address-manage">
+        <navigator url="/page/admin/index">系统管理</navigator>
+      </view>
+    </view>
     <view class="orders-box">
         <view class="orders">我的订单</view>
         <view class="orders-list" wx:for="{{orders}}" wx:key="index">
