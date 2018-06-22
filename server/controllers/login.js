@@ -14,10 +14,11 @@ module.exports = async (ctx, next) => {
         ctx.state.data['time'] = Math.floor(Date.now() / 1000)
 
         //find user's role
-        User.findOrCreate({where: {openId: ctx.state.data.userinfo['openId']}, 
-          default: {role: 'visitor'}}).spread((user, created) => {
-            ctx.state.data.userinfo['balance'] = user.balance
-            ctx.state.data.userinfo['role'] = user.role
-          })
+        let [user, created] = await User.findOrCreate({where: {openId: ctx.state.data.userinfo['openId']}})
+        ctx.state.data.userinfo['balance'] = user.balance
+        ctx.state.data.userinfo['role'] = user.role 
+
+        await next()  
     }
+    
 }
