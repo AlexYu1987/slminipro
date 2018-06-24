@@ -1,3 +1,7 @@
 <view class="main">
-
+  <view><text>首页广告</text></view>
+  <view><text>上架商品</text></view>
+  <view><text>下架商品</text></view>
+  <view><text>客户充值</text></view>
+  <view><text>客户管理</text></view>
 </view>

@@ -7,6 +7,7 @@ App({
     qcloud.setLoginUrl(config.service.loginUrl)
     showBusy('正在登录')
     const session = qcloud.Session.get()
+    let that = this
 
     if (session) {
       // 第二次登录
@@ -14,6 +15,10 @@ App({
       // 可使用本函数更新登录态
       qcloud.loginWithCode({
         success: res => {
+          wx.setStorage({
+            key: 'userinfo',
+            data: res
+          })
           showSuccess('登录成功')
         },
         fail: err => {
@@ -26,6 +31,10 @@ App({
       qcloud.login({
         success: res => {
           showSuccess('登录成功')
+          wx.setStorage({
+            key: 'userinfo',
+            data: res
+          })
         },
         fail: err => {
           console.error(err)

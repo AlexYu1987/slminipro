@@ -3,7 +3,8 @@
     "pages/index/index",
     "pages/cart/cart",
     "pages/user/user",
-    "pages/details/details"
+    "pages/details/details",
+    "pages/admin/admin"
   ],
   "window": {
     "navigationBarTextStyle": "#ffffff",
