@@ -7,7 +7,12 @@
 
     <view wx:if="{{userinfo.role == 'admin'}}" class="address-box">
       <view class="address-manage">
-        <navigator url="/pages/admin/admin">系统管理</navigator>
+        <navigator url="/pages/admin/admin">新商品</navigator>
+      </view>
+    </view>
+    <view wx:if="{{userinfo.role == 'admin'}}" class="address-box">
+      <view class="address-manage">
+        <navigator url="/pages/admin/add">商品上下架</navigator>
       </view>
     </view>
     <view class="orders-box">
