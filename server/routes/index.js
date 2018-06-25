@@ -20,6 +20,9 @@ router.get('/user', validationMiddleware, controllers.user)
 // 图片上传接口，小程序端可以直接将 url 填入 wx.uploadFile 中
 router.post('/upload', controllers.upload)
 
+//增加商品
+router.post('/commodity/add', controllers.commodity.add)
+
 // --- 信道服务接口 Demo --- //
 // GET  用来响应请求信道地址的
 router.get('/tunnel', controllers.tunnel.get)

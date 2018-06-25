@@ -39,4 +39,13 @@ var showModel = (title, content) => {
     })
 }
 
-module.exports = { formatTime, showBusy, showSuccess, showModel }
+var S4 = function() {
+  return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
+};
+
+// Generate a pseudo-GUID by concatenating random hexadecimal. 
+var guid = function() {
+  return (S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4());
+}; 
+
+module.exports = { formatTime, showBusy, showSuccess, showModel, guid }

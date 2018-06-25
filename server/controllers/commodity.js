@@ -16,4 +16,8 @@ async function get(ctx, next) {
   ctx.type = 'application/json; charset=utf-8'
 }
 
-module.exports = {get}
+async function add(ctx, next) {
+  await next()
+}
+
+module.exports = {add}

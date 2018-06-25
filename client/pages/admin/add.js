@@ -1,5 +1,7 @@
 import WxValidate from '../common/Validator.js'
 
+const {guid} = require('../../utils/util.js')
+
 Page({
   data: {
     image: ''
@@ -41,7 +43,7 @@ Page({
       sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
       success: function (res) {
         // 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片
-        that.setData({image: res.tempFilePaths});
+        that.setData({image: res.tempFilePaths[0]});
       }
     })
   },
@@ -58,11 +60,50 @@ Page({
   },
 
   addCommodity: function(e) {
+    let that = this
     if (!this.validator.checkForm(e)) {
       let error = this.validator.errorList[0]
       wx.showToast({
         title: error.msg
       })
     }
+
+    //保存图片
+    wx.uploadFile({
+      url: require('../../config.js').service.uploadUrl,
+      filePath: image,
+      name: guid(),
+      success: function(d) {
+        //调用增加商品的接口
+        wx.request({
+          url: '',
+          header: {'Content-Type': "application/x-www-form-urlencoded"},
+          method: 'POST',
+          data: {name: e.name, price: e.price, picUrl: e.picUrl, param: e.param, ensure: e.ensure, discription: e.discription},
+          success: function(res) {
+            if(res.data.status === 200) {
+              wx.showToast({
+                title: '保存成功'
+              })
+              //TODO:回到主页面
+            } else {
+              wx.showToast({
+                title: res.error.message,
+              })
+            }
+          },
+          fail: function() {
+            wx.showtoast({
+              title: '保存失败'
+            })
+          }
+        })
+      },
+      fail: function() {
+        wx.showToast({
+          title: '上传图片失败',
+        })
+      }
+    })
   }
 })
