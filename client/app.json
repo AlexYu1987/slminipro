@@ -10,7 +10,7 @@
     "navigationBarTextStyle": "#ffffff",
     "navigationBarTitleText": "三脸手作",
     "navigationBarBackgroundColor": "#AB956D",
-    "backgroundColor": "#eeeeee",
+    "backgroundColor": "#F8F8F8",
     "enablePullDownRefresh": true
   },
   "tabBar": {

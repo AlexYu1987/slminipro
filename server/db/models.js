@@ -95,7 +95,7 @@ const Commodity = sequelize.define('commodity', {
     'defaultValue': Sequelize.UUIDV1
   },
   'bigPic': Sequelize.STRING,
-  'smallPic': Sequelize.STRING,
+
   'name': {
     'type': Sequelize.STRING,
     'allowNull': false
@@ -143,12 +143,12 @@ const Order = sequelize.define('order', {
 });
 
 //define associations
-User.hasOne(Address)
+User.belongsTo(Address)
 User.hasMany(Order)
-Order.hasOne(Address)
-Order.hasOne(Express)
+Order.belongsTo(Address)
+Order.belongsTo(Express)
 Order.hasMany(Details)
-Details.hasOne(Commodity)
+Details.belongsTo(Commodity)
 
 module.exports = {
   User, Address, Express, Commodity, Order, Details,
