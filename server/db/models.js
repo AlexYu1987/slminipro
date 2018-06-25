@@ -94,8 +94,7 @@ const Commodity = sequelize.define('commodity', {
     'primaryKey': true,
     'defaultValue': Sequelize.UUIDV1
   },
-  'bigPic': Sequelize.STRING,
-
+  'picUrl': Sequelize.STRING,
   'name': {
     'type': Sequelize.STRING,
     'allowNull': false

@@ -4,7 +4,7 @@
 		"ignore": []
 	},
 	"setting": {
-		"urlCheck": true,
+		"urlCheck": false,
 		"es6": true,
 		"postcss": true,
 		"minified": true,
@@ -13,7 +13,7 @@
 	"miniprogramRoot": "./client",
 	"qcloudRoot": "./server",
 	"compileType": "miniprogram",
-	"libVersion": "2.1.0",
+	"libVersion": "2.1.1",
 	"appid": "wxf24021ee5df00f30",
 	"projectname": "orderSystem",
 	"isGameTourist": false,
