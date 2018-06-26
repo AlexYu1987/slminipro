@@ -29,7 +29,7 @@ var showSuccess = text => wx.showToast({
 })
 
 // 显示失败提示
-var showModel = (title, content) => {
+var showModal = (title, content) => {
     wx.hideToast();
 
     wx.showModal({
@@ -48,4 +48,4 @@ var guid = function() {
   return (S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4());
 }; 
 
-module.exports = { formatTime, showBusy, showSuccess, showModel, guid }
+module.exports = { formatTime, showBusy, showSuccess, showModal, guid }

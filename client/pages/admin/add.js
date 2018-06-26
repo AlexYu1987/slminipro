@@ -1,6 +1,7 @@
 import WxValidate from '../common/Validator.js'
 
 const {guid} = require('../../utils/util.js')
+const { service: {uploadUrl, addCommodityUrl}} = require('../../config.js')
 
 Page({
   data: {
@@ -60,7 +61,8 @@ Page({
   },
 
   addCommodity: function(e) {
-    let that = this
+    const that = this
+
     if (!this.validator.checkForm(e)) {
       let error = this.validator.errorList[0]
       wx.showToast({
@@ -68,28 +70,39 @@ Page({
       })
     }
 
-    //保存图片
+    //上传图片
     wx.uploadFile({
-      url: require('../../config.js').service.uploadUrl,
-      filePath: image,
-      name: guid(),
-      success: function(d) {
-        //调用增加商品的接口
+      url: uploadUrl,
+      filePath: that.data.image,
+      name: 'file',
+
+      success: function(res) {
+        if(res.data.code == 500) {
+          wx.showToast({
+            title: '图片上传失败',
+          })
+          return
+        }
+
+        //修改图片临时目录到正式目录
+        e.detail.value['picUrl'] = JSON.parse(res.data).data.imgUrl
+
+        //图片上传成功后则调用增加商品的接口
         wx.request({
-          url: '',
+          url: addCommodityUrl,
           header: {'Content-Type': "application/x-www-form-urlencoded"},
           method: 'POST',
-          data: {name: e.name, price: e.price, picUrl: e.picUrl, param: e.param, ensure: e.ensure, discription: e.discription},
+          data: e.detail.value,
           success: function(res) {
-            if(res.data.status === 200) {
+            if(res.data.code == 500) {
               wx.showToast({
-                title: '保存成功'
+                title: JSON.parse(res.data).error.message
               })
-              //TODO:回到主页面
             } else {
               wx.showToast({
-                title: res.error.message,
+                title: '添加成功',
               })
+              //TODO:退回到上一个页面
             }
           },
           fail: function() {
@@ -101,7 +114,7 @@ Page({
       },
       fail: function() {
         wx.showToast({
-          title: '上传图片失败',
+          title: '上传图片接口调用失败',
         })
       }
     })
