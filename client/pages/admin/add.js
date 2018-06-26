@@ -1,14 +1,22 @@
 import WxValidate from '../common/Validator.js'
 
-const {guid} = require('../../utils/util.js')
-const { service: {uploadUrl, addCommodityUrl}} = require('../../config.js')
+const {showBusy,showSuccess,showModal} = require('../../utils/util.js')
+const {service: {uploadUrl,addCommodityUrl}} = require('../../config.js')
+const qcloud = require('../../vendor/wafer2-client-sdk/index')
 
 Page({
   data: {
-    image: ''
+    image: '',
+    pcount: 0,
+    dcount: 0,
+    ecount: 0
   },
 
   onLoad: function() {
+    //设置导航条名称
+    wx.setNavigationBarTitle({
+      title: '增加商品',
+    })
     //初始化表单校验器
     this.validator = new WxValidate({
       name: {
@@ -17,13 +25,12 @@ Page({
       },
       price: {
         required: true,
-        digits: true
       },
       picUrl: {
-        required: true
+        minlength: 5
       }
-    },{
-      name:{
+    }, {
+      name: {
         required: '产品名称未填写',
         maxlength: '产品名称长度不能超过100个字符'
       },
@@ -32,42 +39,54 @@ Page({
         digits: '价格'
       },
       picUrl: {
-        required: '未选择产品图片'
+        minlength: '未选择产品图片'
       }
     })
   },
 
-  chooseImage: function (e) {
+  chooseImage: function(e) {
     var that = this;
     wx.chooseImage({
+      count: 1,
       sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
       sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
-      success: function (res) {
+      success: function(res) {
         // 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片
-        that.setData({image: res.tempFilePaths[0]});
+        that.setData({
+          image: res.tempFilePaths[0]
+        });
       }
     })
   },
-  
-  previewImage: function (e) {
+
+  previewImage: function(e) {
     wx.previewImage({
       current: e.currentTarget.id, // 当前显示图片的http链接
-      urls: this.data.image // 需要预览的图片http链接列表
+      urls: [this.data.image] // 需要预览的图片http链接列表
     })
   },
 
   delUrl: function() {
-    this.setData({image: ''})
+    this.setData({
+      image: ''
+    })
   },
 
   addCommodity: function(e) {
+    showBusy('处理中...');
     const that = this
 
     if (!this.validator.checkForm(e)) {
       let error = this.validator.errorList[0]
-      wx.showToast({
-        title: error.msg
+      showModal('未填写正确', {
+        '原因': error.msg
       })
+
+      return
+    }
+
+    if (!this.data.image || this.data.image.length < 1) {
+      showModal('未正确填写', {'原因': '未选择商品图片'})
     }
 
     //上传图片
@@ -77,10 +96,8 @@ Page({
       name: 'file',
 
       success: function(res) {
-        if(res.data.code == 500) {
-          wx.showToast({
-            title: '图片上传失败',
-          })
+        if (res.data.code == 500) {
+          showModal('图片上传失败')
           return
         }
 
@@ -88,35 +105,41 @@ Page({
         e.detail.value['picUrl'] = JSON.parse(res.data).data.imgUrl
 
         //图片上传成功后则调用增加商品的接口
-        wx.request({
+        qcloud.request({
           url: addCommodityUrl,
-          header: {'Content-Type': "application/x-www-form-urlencoded"},
           method: 'POST',
           data: e.detail.value,
           success: function(res) {
-            if(res.data.code == 500) {
-              wx.showToast({
-                title: JSON.parse(res.data).error.message
-              })
+            if (res.data.code == 500) {
+              showModal(JSON.parse(res.data).error.message)
             } else {
               wx.showToast({
                 title: '添加成功',
+                icon: 'success',
+                duration: 1800,
+                success: function() {
+                  //TODO:退回到上一个页面
+                  setTimeout(wx.navigateBack, 2000)
+                }
               })
-              //TODO:退回到上一个页面
             }
           },
           fail: function() {
-            wx.showtoast({
-              title: '保存失败'
-            })
+            showModal('保存失败')
           }
         })
       },
       fail: function() {
-        wx.showToast({
-          title: '上传图片接口调用失败',
-        })
+        showModal('上传图片失败')
       }
     })
+  },
+
+  countChar: function(value, cursor) {
+    let id = value.currentTarget.id
+    let count = value.detail.value.length
+    const opt = {}
+    opt[id] = count
+    this.setData(opt)
   }
 })
