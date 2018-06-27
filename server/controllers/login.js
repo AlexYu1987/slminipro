@@ -20,13 +20,14 @@ const getUserInfo = async(ctx, next) => {
 }
 
 const getRoleInfo = (ctx, next) => {
-  return User.findOrCreate({
+  return User.findOrCreate({ 
     where: {
       openId: ctx.state.data.userinfo['openId']
     }
   }).spread((user, created) => {
     ctx.state.data.userinfo['balance'] = user.balance
     ctx.state.data.userinfo['role'] = user.role
+    ctx.state.data.userinfo['discount'] = user.discount
     return next()
   })
 }
