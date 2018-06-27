@@ -7,7 +7,7 @@ const {
   Commodity
 } = require('../db/models.js')
 
-const add = function add(ctx, next) {
+const add = function(ctx, next) {
   try {
     let data = ctx.request.body
     const name = data.name
@@ -17,13 +17,17 @@ const add = function add(ctx, next) {
     const discription = data.discription
     const ensure = data.ensure
 
-    const createOpt = {name: name, price: price, picUrl: picUrl}
+    const createOpt = {
+      name: name,
+      price: price,
+      picUrl: picUrl
+    }
 
     if (param) createOpt['param'] = param
     if (discription) createOpt['discription'] = discription
-    if (ensure)  createOpt['ensure'] = ensure
+    if (ensure) createOpt['ensure'] = ensure
 
-    Commodity.create(createOpt).then(data => {
+    return Commodity.create(createOpt).then(data => {
       return next()
     }).catch(err => {
       ctx.state.code = 500
@@ -35,6 +39,22 @@ const add = function add(ctx, next) {
   }
 }
 
+const getAll = function(ctx, next) {
+  return Commodity.findAll().then(commodities => {
+    ctx.state.data = []
+    commodities.forEach(c => {
+      ctx.state.data.push(c.dataValues)
+    })
+    ctx.state.code = 200
+    return next()
+  }).catch(error => {
+    ctx.state.code = 500
+    ctx.state.data = '数据库错误'
+  })
+
+}
+
 module.exports = {
-  add
+  add,
+  getAll
 }

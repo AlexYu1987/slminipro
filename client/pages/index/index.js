@@ -5,7 +5,8 @@
  */
 
 const qcloud = require('../../vendor/wafer2-client-sdk/index')
-const config = require('../../config')
+const {service: {queryAllCommodityUrl}} = require('../../config')
+const {showSuccess, showModal, showBusy} = require('../../utils/util.js')
 
 Page({
   data: {
@@ -14,37 +15,6 @@ Page({
       '/images/b2.jpg',
       '/images/b3.jpg'
     ],
-    selectedList: [{
-      id: 103,
-      name: "蛋黄酥",
-      url: "/images/s4.png",
-      price: 30
-    }, {
-      id: 102,
-      name: "牛轧糖",
-      url: "/images/s5.png",
-      price: 25
-    }, {
-      id: 100,
-      name: "黑森林蛋糕",
-      url: "/images/s6.png",
-      price: 26
-    }, {
-      id: 120,
-      name: "榴莲班戟",
-      url: "/images/s6.png",
-      price: 56
-    }, {
-      id: 150,
-      name: "蛋黄酥",
-      url: "/images/s4.png",
-      price: 30
-    }, {
-      id: 101,
-      name: "牛轧糖",
-      url: "/images/s5.png",
-      price: 25
-    }],
     indicatorDots: false,
     autoplay: false,
     interval: 3000,
@@ -52,6 +22,25 @@ Page({
   },
 
   onLoad: function () {
-    
+    //获取商品列表
+    let that = this
+    wx.request({
+      url: queryAllCommodityUrl,
+      method: 'GET',
+
+      success: function(res) {
+        let result = res.data
+        if(result.code == 500) {
+          showModal('无法获取商品列表', result.error.message)
+          return
+        }
+        
+        that.setData({selectedList: result.data})
+      },
+
+      fail: function(res) {
+        showModal('无法获取商品列表')
+      }
+    })
   }
 })

@@ -22,6 +22,8 @@ router.post('/upload', controllers.upload)
 
 //增加商品
 router.post('/commodity/add', controllers.commodity.add)
+//查询所有商品
+router.get('/commodity/all', controllers.commodity.getAll)
 
 // --- 信道服务接口 Demo --- //
 // GET  用来响应请求信道地址的
