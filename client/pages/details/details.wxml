@@ -1,6 +1,6 @@
 <view class="main">
     <view class="goods-box">
-        <image src="{{goods.image}}" class="goods-thumb"></image>
+        <image src="{{goods.picUrl}}" class="goods-thumb"></image>
         
         <navigator open-type="switchTab" url="../cart/cart">
             <view class="carts-icon {{scaleCart?'on':''}}">
@@ -16,7 +16,7 @@
             <image src="/images/cart1.png"  class="goods-cart-img" bindtap="addToCart"></image>
         </view>
         <image wx:if="{{show}}" src="/images/cart1.png" class="to-carts-icon"></image>
-        <view class="goods-stock">{{goods.status}}</view>
+        <view class="goods-stock">有货</view>
         <view class="goods-title">{{goods.name}}</view>
         <view class="goods-price">￥ {{goods.price}}</view>
     </view>

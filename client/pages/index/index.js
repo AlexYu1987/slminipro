@@ -43,10 +43,8 @@ Page({
       // 可使用本函数更新登录态
       qcloud.loginWithCode({
         success: res => {
-          wx.setStorageSync({
-            key: 'userinfo',
-            data: res
-          })
+          wx.removeStorageSync('userinfo')
+          wx.setStorageSync('userinfo',res)
           showSuccess('登录成功')
           that.fetchList(res.discount)
         },
@@ -60,10 +58,8 @@ Page({
       qcloud.login({
         success: res => {
           showSuccess('登录成功')
-          wx.setStorageSync({
-            key: 'userinfo',
-            data: res
-          })
+          wx.removeStorageSync('userinfo')
+          wx.setStorageSync('userinfo',res)
           that.fetchList(res.discount)
         },
         fail: err => {

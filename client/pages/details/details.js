@@ -11,15 +11,14 @@ Page({
 
   onLoad: function(option) {
     let goods = {
-      id: 1,
-      image: "/images/goods1.png",
-      title: "抹茶味蛋黄酥",
-      price: 0.01,
-      stock: "有货",
-      detail: "保存需冷藏，吃时微波炉加热30秒",
-      parameter: "125g/个\t125Cal",
-      service: "食品不支持退货"
-    };
+      id: option.id,
+      price: option.price,
+      name: option.name,
+      picUrl: option.picUrl,
+      discription: option.discription,
+      ensure: option.ensure,
+      param: option.param
+    }
     goods.id = option.id;
     goods.price = option.price
     this.setData({"goods":goods});
@@ -61,8 +60,8 @@ Page({
       if (c.id === this.data.goods.id) {
         c.num = total;
         c.id = this.data.goods.id;
-        c.title = this.data.goods.title;
-        c.image = this.data.goods.image;
+        c.name = this.data.goods.name;
+        c.picUrl = this.data.goods.picUrl;
         c.price = this.data.goods.price;
         c.select = true;
         hasInCarts = true;
@@ -73,8 +72,8 @@ Page({
       carts.push({
         "id" : this.data.goods.id,
         "num" : total,
-        "title": this.data.goods.title,
-        "image": this.data.goods.image,
+        "name": this.data.goods.name,
+        "picUrl": this.data.goods.picUrl,
         "price": this.data.goods.price,
         "select": true
       })

@@ -9,7 +9,7 @@
     <view class="newest">
         <view class="newest-box">
             <view wx:for="{{selectedList}}" wx:key="{{index}}" class="newest-list">
-                <navigator url="../details/details?id={{item.id}}&price={{item.price}}">
+                <navigator url="../details/details?id={{item.id}}&name={{item.name}}&price={{item.price}}&picUrl={{item.picUrl}}&discription={{item.discription}}&ensure={{item.ensure}}&param={{item.param}}">
                     <image mode='center' src="{{item.picUrl}}"></image>
                     <view class="newest-text"><text>{{item.name}}</text></view>
                     <view class="newest-text"><text>￥ {{item.price}}</text></view>
