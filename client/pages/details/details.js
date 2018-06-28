@@ -76,8 +76,9 @@ Page({
         "name": this.data.goods.name,
         "picUrl": this.data.goods.picUrl,
         "price": this.data.goods.price,
-        "selected": true
+        "selected": true, 
       })
+      total = this.data.num
     }
 
     wx.setStorageSync("carts", carts);
