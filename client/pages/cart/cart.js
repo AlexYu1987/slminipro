@@ -1,4 +1,8 @@
 // page/component/new-pages/cart/cart.js
+const qcloud = require('../../vendor/wafer2-client-sdk/index.js')
+const {showSuccess, showBusy, showModal} = require('../../utils/util.js')
+const {service:{submitOrderUrl}} = require('../../config.js')
+
 Page({
   data: {
     carts:[],               // 购物车列表
@@ -13,10 +17,6 @@ Page({
     this.setData({
       hasList: true,
       carts: wx.getStorageSync("carts")
-      /*[
-        {id:1,title:'新鲜芹菜 半斤',image:'/image/s5.png',num:4,price:0.01,selected:true},
-        {id:2,title:'素米 500g',image:'/image/s6.png',num:1,price:0.03,selected:true}
-      ]*/
     });
     this.getTotalPrice();
   },
@@ -120,6 +120,40 @@ Page({
       carts: carts,
       totalPrice: total.toFixed(2)
     });
-  }
+  },
 
+submitOrder(){
+  let details = []
+  this.data.carts.forEach(goods => {
+    if(!goods.selected) return
+    details.push({
+      commodityId: goods.id,
+      count: goods.num
+    })
+  })
+
+  showBusy()
+  qcloud.request({
+    url: submitOrderUrl,
+    method: 'POST',
+    data: details,
+
+    success: function(res) {
+      if(res.data.code == 500) {
+        showModal('提交订单失败', res.data.error)
+        return
+      }
+      showSuccess('订单已提交')
+      setTimeout(() => {
+        wx.navigateTo({
+          url: '../user/user',
+        })
+      }, 1500)
+    },
+
+    fail: function() {
+      showModal('无法提交订单')
+    }
+  })
+}
 })

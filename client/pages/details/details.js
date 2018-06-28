@@ -35,7 +35,7 @@ Page({
   addToCart() {
     const self = this;
     const num = this.data.num;
-    let total = this.data.totalNum;
+    let total = 0
 
     self.setData({
       show: true
@@ -49,7 +49,7 @@ Page({
         self.setData({
           scaleCart: false,
           hasCarts : true,
-          totalNum: num + total
+          totalNum: total
         })
       }, 200)
     }, 300)
@@ -58,24 +58,25 @@ Page({
     let hasInCarts = false;
     carts.forEach(c => {
       if (c.id === this.data.goods.id) {
-        c.num = total;
+        c.num +=  this.data.num;
         c.id = this.data.goods.id;
         c.name = this.data.goods.name;
         c.picUrl = this.data.goods.picUrl;
         c.price = this.data.goods.price;
-        c.select = true;
+        c.selected = true;
         hasInCarts = true;
+        total = c.num
       }
     });
 
     if (!hasInCarts) {
       carts.push({
         "id" : this.data.goods.id,
-        "num" : total,
+        "num" : this.data.num,
         "name": this.data.goods.name,
         "picUrl": this.data.goods.picUrl,
         "price": this.data.goods.price,
-        "select": true
+        "selected": true
       })
     }
 

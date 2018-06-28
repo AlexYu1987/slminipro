@@ -16,7 +16,6 @@ const getUserInfo = async(ctx, next) => {
     ctx.state.data['time'] = Math.floor(Date.now() / 1000)
     await next()
   }
-
 }
 
 const getRoleInfo = (ctx, next) => {

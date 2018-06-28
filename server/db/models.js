@@ -1,6 +1,7 @@
 /* 
  * Define sequelize(an ORM middleware) models
  * Created by: Alex.Y (6/13/2018)
+ * Updated by: Alex.Y (6/28/2018)
  */
 const Sequelize = require('sequelize')
 const { mysql: config } = require('../config.js')
@@ -136,9 +137,13 @@ const Order = sequelize.define('order', {
   },
   'isSF': {
     'type': Sequelize.BOOLEAN,
-    'defaultValue': false
+    'defaultValue': true
   },
-  'note': Sequelize.TEXT
+  'note': Sequelize.TEXT,
+  'total': {
+    'type': Sequelize.FLOAT,
+    'allowNull': false
+  }
 });
 
 //define associations
@@ -150,7 +155,7 @@ Order.hasMany(Details)
 Details.belongsTo(Commodity)
 
 module.exports = {
-  User, Address, Express, Commodity, Order, Details,
+  User, Address, Express, Commodity, Order, Details, Sequelize, sequelize,
   buildAll: () => sequelize.sync(),
   rebuildAll: () => sequelize.sync({ force: true })
 }

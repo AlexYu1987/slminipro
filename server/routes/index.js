@@ -20,21 +20,13 @@ router.get('/user', validationMiddleware, controllers.user)
 // 图片上传接口，小程序端可以直接将 url 填入 wx.uploadFile 中
 router.post('/upload', controllers.upload)
 
+// --- 商品服务接口 --- //
 //增加商品
 router.post('/commodity/add', controllers.commodity.add)
 //查询所有商品
 router.get('/commodity/all', controllers.commodity.getAll)
 
-// --- 信道服务接口 Demo --- //
-// GET  用来响应请求信道地址的
-router.get('/tunnel', controllers.tunnel.get)
-// POST 用来处理信道传递过来的消息
-router.post('/tunnel', controllers.tunnel.post)
-
-// --- 客服消息接口 Demo --- //
-// GET  用来响应小程序后台配置时发送的验证请求
-router.get('/message', controllers.message.get)
-// POST 用来处理微信转发过来的客服消息
-router.post('/message', controllers.message.post)
+// --- 订单服务接口 Demo --- //
+router.post('order/add', controllers.order.add)
 
 module.exports = router

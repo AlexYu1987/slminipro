@@ -24,7 +24,9 @@ var config = {
     uploadUrl: `${host}/weapp/upload`,
 
     addCommodityUrl: `${host}/weapp/commodity/add`,
-    queryAllCommodityUrl: `${host}/weapp/commodity/all`
+    queryAllCommodityUrl: `${host}/weapp/commodity/all`,
+
+    submitOrderUrl: `${host}/weapp/order/add`
   }
 };
 
