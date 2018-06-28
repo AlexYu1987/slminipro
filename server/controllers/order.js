@@ -9,7 +9,7 @@ const add = function(ctx, next) {
   return sequelize.transaction(function (t) {
     //Get openId from Session and search userInfo
     let session = ctx.header['X - WX - Skey']
-    let openId = cession.userinfo.openId
+    let openId = session.userinfo.openId
     if (!openId) throw new Error('未登录')
 
     //Use discount to calculate total cost, then serialize order
