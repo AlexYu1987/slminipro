@@ -132,9 +132,12 @@ submitOrder(){
     })
   })
 
-  showBusy()
+  let openId = wx.getStorageSync('userinfo')['openId']
+
+  showBusy('正在创建订单')
   qcloud.request({
     url: submitOrderUrl,
+    header: {openId: openId},
     method: 'POST',
     data: details,
 
@@ -151,8 +154,8 @@ submitOrder(){
       }, 1500)
     },
 
-    fail: function() {
-      showModal('无法提交订单')
+    fail: function(error) {
+      showModal('无法提交订单', error)
     }
   })
 }
