@@ -27,6 +27,6 @@ router.post('/commodity/add', controllers.commodity.add)
 router.get('/commodity/all', controllers.commodity.getAll)
 
 // --- 订单服务接口 Demo --- //
-router.post('/order/add', controllers.order.test)
+router.post('/order/add', controllers.order.add)
 
 module.exports = router
