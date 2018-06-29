@@ -18,40 +18,59 @@ const add = function(ctx, next) {
       comIds.push(detail.commodityId)
     })
 
+    // commodity.findAll({
+    //   where: {id: {[Sequelize.Op.in]: comIds}}
+    // },{
+    //   transaction: t
+    // }).then(c => {
+    //   //calculate totoal price
+    //   details.forEach(c => {
+    //     total += commodities[c.commodityId] * c.count
+    //   })
+    //   return User.
+    // })
+
     //Find commodity in comIds 
     Commodity.findAll({
       where: {id: {[Sequelize.Op.in]: comIds} },
-      attributes: ['id', ['price']]
+      attributes: ['id', 'price']
     }, {transaction: t}).then(commodities => {
       //calculate totoal price
-      details.forEach(c => {
-        total += commodities[c.commodityId] * c.count
+      details.forEach(d => {
+        commodities.forEach(c => {
+          if (d.commodityId == c.id) {
+            total += c.price * d.count
+          }
+        })    
       })
-
       return User.findOne({
         where: {openId: openId},
         attributes: ['discount', 'balance']
-      })
-    }, {transaction: t}).then(u => {
+      }, { transaction: t })
+    }).then(u => {
       user = u
       if (u.balance < total) throw Error('余额不足')
       //Add order include details
       return Order.create({
         total: total,
         userOpenId: openId
-      })
-    }, {transaction: t}).then(order => {
+      }, { transaction: t })
+    }).then(order => {
       //Add details
+      let detailsArr = []
       details.forEach(d => {
-        Details.create({
+        detailsArr.push({
           commodityId: d.commodityId,
           count: d.count,
           orderId: order.id
         })
+        return Details.bulkCreate(detailsArr,{transaction: t})
       })
-    },{transaction:t}).then(() => {
+    }).then(() => {
       //Charge user's fee
-      User.update({balance: user.balance - total}, {where: {openId: openId}})
+      return User.update({balance: user.balance - total}, {where: {openId: openId}}, {transaction: t})
+    }).catch(err => {
+      throw new Error(err.message)
     })
   }).then(result => {
     //return user info to refresh balance
@@ -63,4 +82,21 @@ const add = function(ctx, next) {
   })
 }
 
-module.exports = {add}
+const test = async function(ctx) {
+  //Get openId from Session and search userInfo
+  let openId = ctx.header['openid']
+  if (!openId) throw new Error('未登录')
+
+  //Use discount to calculate total cost, then serialize order
+  let details = ctx.request.body || [], total = 0, user = {}
+  let comIds = []
+  details.forEach(detail => {
+    comIds.push(detail.commodityId)
+  })
+
+  let t = await Sequelize.transaction()
+
+
+}
+
+module.exports = {add, test}
