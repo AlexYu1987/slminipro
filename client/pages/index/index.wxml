@@ -1,20 +1,32 @@
 <view class="main">
-    <swiper indicator-dots="true" autoplay="true" interval="{{interval}}" duration="{{duration}}" circular="true">
-        <block wx:for="{{imgUrls}}" wx:key="{{index}}">
-            <swiper-item>
-                <image src="{{item}}" class="slide-image" width="100%"/>
-            </swiper-item>
-        </block>
-    </swiper>
-    <view class="newest">
-        <view class="newest-box">
-            <view wx:for="{{selectedList}}" wx:key="{{index}}" class="newest-list">
-                <navigator url="../details/details?id={{item.id}}&name={{item.name}}&price={{item.price}}&picUrl={{item.picUrl}}&discription={{item.discription}}&ensure={{item.ensure}}&param={{item.param}}">
-                    <image mode='center' src="{{item.picUrl}}"></image>
-                    <view class="newest-text"><text>{{item.name}}</text></view>
-                    <view class="newest-text"><text>￥ {{item.price}}</text></view>
-                </navigator>
-            </view>
-        </view>
+  <swiper indicator-dots="true" autoplay="true" interval="{{interval}}" duration="{{duration}}" circular="true">
+    <block wx:for="{{imgUrls}}" wx:key="{{index}}">
+      <swiper-item>
+        <image src="{{item}}" class="slide-image" width="100%" />
+      </swiper-item>
+    </block>
+  </swiper>
+  <view class="search-box">
+    <input class="search-input" placeholder="搜索" value="{{value}}" bindinput="searchInput" />
+    <icon class="weui-icon-search_in-box search-icon" type="search" size="14"></icon>
+    <text class="search-btn" wx:if="{{showResult}}" bindtap="cancelSearch">取消</text>
+  </view>
+  <view class="newest">
+    <view class="newest-title">
+      <text>最近新品</text>
     </view>
+    <view class="newest-box">
+      <view wx:for="{{selectedList}}" wx:key="{{index}}" class="newest-list">
+        <navigator url="../details/details?id={{item.id}}&name={{item.name}}&price={{item.price}}&picUrl={{item.picUrl}}&discription={{item.discription}}&ensure={{item.ensure}}&param={{item.param}}">
+          <image mode='center' src="{{item.picUrl}}"></image>
+          <view class="newest-text">
+            <text>{{item.name}}</text>
+          </view>
+          <view class="newest-text">
+            <text>￥ {{item.price}}</text>
+          </view>
+        </navigator>
+      </view>
+    </view>
+  </view>
 </view>
