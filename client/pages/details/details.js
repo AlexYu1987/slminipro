@@ -21,7 +21,19 @@ Page({
     }
     goods.id = option.id;
     goods.price = option.price
-    this.setData({"goods":goods});
+
+    //get totol num from carts
+    let carts = wx.getStorageSync('carts')
+    let g = carts.find(c => {return goods.id == c.id}) || {}
+    if (g.num) {
+      this.setData({
+        hasCarts: true,
+        totalNum: g.num
+      })
+    }
+    this.setData({
+      goods: goods,
+    });
   },
 
   addCount() {
