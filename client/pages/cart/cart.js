@@ -51,6 +51,8 @@ Page({
     }else{
       this.getTotalPrice();
     }
+
+    wx.setStorageSync('carts', this.data.carts)
   },
 
   /**
@@ -120,43 +122,5 @@ Page({
       carts: carts,
       totalPrice: total.toFixed(2)
     });
-  },
-
-submitOrder(){
-  let details = []
-  this.data.carts.forEach(goods => {
-    if(!goods.selected) return
-    details.push({
-      commodityId: goods.id,
-      count: goods.num
-    })
-  })
-
-  let openId = wx.getStorageSync('userinfo')['openId']
-
-  showBusy('正在创建订单')
-  qcloud.request({
-    url: submitOrderUrl,
-    header: {openId: openId},
-    method: 'POST',
-    data: details,
-
-    success: function(res) {
-      if(res.data.code == 500) {
-        showModal('提交订单失败', res.data.error)
-        return
-      }
-      showSuccess('订单已提交')
-      setTimeout(() => {
-        wx.navigateTo({
-          url: '../user/user',
-        })
-      }, 1500)
-    },
-
-    fail: function(error) {
-      showModal('无法提交订单', error)
-    }
-  })
-}
+  }
 })

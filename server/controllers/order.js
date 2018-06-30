@@ -9,7 +9,8 @@ const {
   Order,
   User,
   Commodity,
-  Details
+  Details,
+  Address
 } = require('../db/models.js')
 
 const add = async function(ctx, next) {
@@ -18,8 +19,9 @@ const add = async function(ctx, next) {
   if (!openId) throw new Error('未登录')
 
   //Use discount to calculate total cost, then serialize order
-  let details = ctx.request.body || [],
-    total = 0
+  let details = ctx.request.body.details || [],
+    total = 0,
+    address = ctx.request.body.address
   let comIds = []
   details.forEach(detail => {
     comIds.push(detail.commodityId)
@@ -60,11 +62,26 @@ const add = async function(ctx, next) {
 
   let t = await sequelize.transaction()
   try {
+    //insert address
+    let addressModel = await Address.create({
+      name: address['userName'],
+      province: address['provinceName'],
+      city: address['cityName'],
+      distribute: address['countyName'],
+      street: address['detailInfo'],
+      poscode: address['postalCode'],
+      phone: address['telNumber']
+    },{transaction: t})
+    address = addressModel.dataValues
+
     //insert order
     let orderModel = await Order.create({
       total: total,
-      userOpenId: openId
-    },{transaction: t})
+      userOpenId: openId,
+      addressId: address.id
+    }, {
+      transaction: t
+    })
     let order = orderModel.dataValues
 
     //update balance
@@ -76,7 +93,7 @@ const add = async function(ctx, next) {
       },
       transaction: t
     })
-
+  
     //Add details
     let detailsArr = []
     details.forEach(d => {
@@ -91,7 +108,9 @@ const add = async function(ctx, next) {
     })
     //commit transaction
     await t.commit()
+    user.balance = user.balance - total
     ctx.state.code = 200
+    ctx.state.data = user
     await next()
 
   } catch (error) {

@@ -4,7 +4,8 @@
     "pages/cart/cart",
     "pages/user/user",
     "pages/details/details",
-    "pages/admin/add"
+    "pages/admin/add",
+    "pages/orders/orders"
   ],
   "window": {
     "navigationBarTextStyle": "#ffffff",

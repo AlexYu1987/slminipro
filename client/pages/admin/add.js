@@ -118,7 +118,7 @@ Page({
                 icon: 'success',
                 duration: 1800,
                 success: function() {
-                  //TODO:退回到上一个页面
+                  //退回到上一个页面
                   setTimeout(wx.navigateBack, 2000)
                 }
               })

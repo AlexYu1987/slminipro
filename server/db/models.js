@@ -22,6 +22,7 @@ const Address = sequelize.define('address', {
   },
   'gender': {
     'type': Sequelize.ENUM('male', 'female'),
+    'defaultValue': 'male',
     'allowNull': false
   },
   'province': {
@@ -32,6 +33,10 @@ const Address = sequelize.define('address', {
     'type': Sequelize.STRING,
     'allowNull': false
   },
+  'distribute': {
+    'type': Sequelize.STRING,
+    'allowNull': false
+  },
   'street': {
     'type': Sequelize.STRING,
     'allowNull': false
@@ -39,7 +44,8 @@ const Address = sequelize.define('address', {
   'phone': {
     'type': Sequelize.STRING,
     'allowNull': false
-  }
+  },
+  'poscode': Sequelize.STRING
 });
 
 const User = sequelize.define('user', {
