@@ -71,7 +71,9 @@ const add = async function(ctx, next) {
       street: address['detailInfo'],
       poscode: address['postalCode'],
       phone: address['telNumber']
-    },{transaction: t})
+    }, {
+      transaction: t
+    })
     address = addressModel.dataValues
 
     //insert order
@@ -93,7 +95,7 @@ const add = async function(ctx, next) {
       },
       transaction: t
     })
-  
+
     //Add details
     let detailsArr = []
     details.forEach(d => {
@@ -120,6 +122,35 @@ const add = async function(ctx, next) {
   }
 }
 
+const uncomplite = async function(ctx, next) {
+  const userOpenId = ctx.request.query.userOpenId
+  if (userIpenId) {
+    throw new Error('用户未登录')
+  }
+
+  try {
+    const models = await Order.findAll({
+      where: {
+        userOpenId: userOpenId,
+        status: 'ready',
+        include: [{
+          model: Details,
+          as: 'details',
+          include: [Commodity]
+        }, Address],
+        order: 'createAt DESC'
+      }
+    })
+  } catch (err) {
+    throw new Error('数据库异常')
+  }
+
+  const orders = models.dataValues
+  ctx.state.data = orders
+  await next()
+}
+
 module.exports = {
-  add
+  add,
+  uncomplite
 }

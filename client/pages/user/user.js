@@ -1,47 +1,73 @@
 // page/component/new-pages/user/user.js
+const {
+  service: {
+    queryUncompliteOrdersUrl,
+    countUncompliteOrderUrl
+  }
+} = require('../../config.js')
+const qcloud = require('../../vendor/wafer2-client-sdk/index')
+
 Page({
-  data:{
+  data: {badge: 0},
+  onLoad: function() {
+
   },
-  onLoad: function(){
-    //获取用户信息
-    let userinfo = wx.getStorageSync('userinfo')
-    this.setData({userinfo: userinfo})
-  },
-  onShow(){
-    var self = this;
-    /**
-     * 获取本地缓存 地址信息
-     */
-    wx.getStorage({
-      key: 'address',
-      success: function(res){
-        self.setData({
-          hasAddress: true,
-          address: res.data
-        })
-      }
+
+  onShow() {
+    const userinfo = wx.getStorageSync('userinfo')
+    const that = this
+    this.setData({
+      userinfo: userinfo
     })
+
+    if (userinfo.role === 'user') {
+      qcloud.request({
+        url: queryUncompliteOrdersUrl,
+        data: {
+          userOpenId: userinfo.openId
+        },
+        success: function(res) {
+          let orders = res.data
+          that.mapOrders2toast(orders)
+        },
+        fail: function(res) {
+          wx.showModal({
+            title: '获取订单失败',
+            content: res.data.error.message,
+          })
+        }
+      })
+      
+    } else if (userinfo.role === 'admin') {
+      qcloud.request({
+        url: countUncompliteOrderUrl,
+        success: function(res) {
+          that.setData({badge:res.data})
+        },
+        fail: function(res) {
+          wx.showModal({
+            title: '获取订单数失败',
+            content: res.error.message,
+          })
+        }
+      })
+    }
   },
-  /**
-   * 发起支付请求
-   */
-  payOrders(){
-    wx.requestPayment({
-      timeStamp: 'String1',
-      nonceStr: 'String2',
-      package: 'String3',
-      signType: 'MD5',
-      paySign: 'String4',
-      success: function(res){
-        console.log(res)
-      },
-      fail: function(res) {
-        wx.showModal({
-          title:'支付提示',
-          content:'<text>',
-          showCancel: false
-        })
-      }
+
+  mapOrders2toast(orders) {
+    const toasts = orders.map(order => {
+      const result = {}
+      result.user = order.address.name
+      result.phone = order.address.phone
+      result.create = order.createdAt
+      result.total = order.total
+      result.details = ''
+      order.details.forEach(detail => {
+        details + `${order.details.commodity.name}(数量：${order.details.commodity.count})  `
+      })
+      return result
     })
+
+    this.setData({orders: toasts})
   }
 })

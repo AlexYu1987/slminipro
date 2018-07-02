@@ -1,0 +1,2 @@
+/* pages/admin/order.wxss */
+@import '../common/weui.wxss';

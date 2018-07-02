@@ -1,34 +1,47 @@
 <view class="main">
-    <view class="header">
-        <image src="{{userinfo.avatarUrl}}" class="thumb"></image>
-        <text class="nickname">{{userinfo.nickName}}</text>
-        <text class="about">关于我们</text>
-    </view>
+  <view class="header">
+    <image src="{{userinfo.avatarUrl}}" class="thumb"></image>
+    <text class="nickname">{{userinfo.nickName}}</text>
+    <text wx:if='{{userinfo.role=="user"}}'>余额：{{userinfo.balance}}</text>
+    <text wx:if='{{userinfo.role=="user"}}'>充值</text>
+    <text class="about">关于我们</text>
+  </view>
 
-    <view wx:if="{{userinfo.role == 'admin'}}" class="address-box">
-      <view class="address-manage">
-        <navigator url="/pages/admin/add">添加新商品</navigator>
+  <view wx:if='{{userinfo.role == "admin"}}' class="address-box">
+    <view class="address-manage">
+      <navigator url='/pages/admin/order'>新订单<view class="weui-badge" style="margin-left: 5px;">{{badge}}</view></navigator>
+    </view>
+  </view>
+  <view wx:if='{{userinfo.role == "admin"}}' class="address-box">
+    <view class='address-manage'>
+      <navigator url='/pages/admin/add'>用户充值</navigator>
+    </view>
+  </view>
+  <view wx:if="{{userinfo.role == 'admin'}}" class="address-box">
+    <view class="address-manage">
+      <navigator url="/pages/admin/add">添加新商品</navigator>
+    </view>
+  </view>
+
+  <view wx:if='{{userinfo.role != admin}}' class="orders-box">
+    <view class="orders">我的订单</view>
+    <view class="orders-list" wx:for="{{orders}}" wx:key="index">
+      <view class="orders-number">订单编号：{{item.number}}</view>
+      <view class="orders-detail">
+        <view>收货人:{{item.name}}</view>
+        <view>电话:{{item.phone}}</view>
+        <view>商品清单:{{item.details}}</view>
+        <text class="orders-status">{{item.create}}</text>
+      </view>
+      <view class="orders-footer">
+        <text>金额：￥{{item.total}}</text>
       </view>
     </view>
-    <view wx:if="{{userinfo.role == 'admin'}}" class="address-box">
-      <view class="address-manage">
-        <navigator url="/pages/admin/add">商品上下架</navigator>
-      </view>
+  </view>
+
+  <view class='address-box'>
+    <view class='address-manage'>
+      <navigator url="">历史订单</navigator>
     </view>
-    <view class="orders-box">
-        <view class="orders">{{userinfo.role=='admin'?'待处理订单':'我的订单'}}</view>
-        <view class="orders-list" wx:for="{{orders}}" wx:key="index">
-            <view class="orders-number">订单编号：{{item.number}}</view>
-            <view class="orders-detail">
-                <image src="{{item.thumb}}"></image>
-                <view class="">{{item.name}}</view>
-                <view class="">{{item.count}}</view>
-                <text class="orders-status">{{item.status}}</text>
-            </view>
-            <view class="orders-footer">
-                <text>实付：￥{{item.money}}</text>
-                <button size="mini" class="orders-btn" bindtap="payOrders">付款</button>
-            </view>
-        </view>
-    </view>
+  </view>
 </view>

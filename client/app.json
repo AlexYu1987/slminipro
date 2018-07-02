@@ -5,7 +5,9 @@
     "pages/user/user",
     "pages/details/details",
     "pages/admin/add",
-    "pages/orders/orders"
+    "pages/orders/orders",
+    "pages/admin/order",
+    "pages/admin/express"
   ],
   "window": {
     "navigationBarTextStyle": "#ffffff",
@@ -19,22 +21,26 @@
     "selectedColor": "#AB956D",
     "borderStyle": "#F5F5F5",
     "backgroundColor": "#F5F5F5",
-    "list": [{
-      "pagePath": "pages/index/index",
-      "iconPath": "images/12.png",
-      "selectedIconPath": "images/11.png",
-      "text": "主页"
-    }, {
-      "pagePath": "pages/cart/cart",
-      "iconPath": "images/32.png",
-      "selectedIconPath": "images/31.png",
-      "text": "购物车"
-    }, {
-      "pagePath": "pages/user/user",
-      "iconPath": "images/42.png",
-      "selectedIconPath": "images/41.png",
-      "text": "用户中心"
-    }]
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "iconPath": "images/12.png",
+        "selectedIconPath": "images/11.png",
+        "text": "主页"
+      },
+      {
+        "pagePath": "pages/cart/cart",
+        "iconPath": "images/32.png",
+        "selectedIconPath": "images/31.png",
+        "text": "购物车"
+      },
+      {
+        "pagePath": "pages/user/user",
+        "iconPath": "images/42.png",
+        "selectedIconPath": "images/41.png",
+        "text": "用户中心"
+      }
+    ]
   },
   "networkTimeout": {
     "request": 10000,
