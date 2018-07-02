@@ -124,7 +124,7 @@ const add = async function(ctx, next) {
 
 const uncomplite = async function(ctx, next) {
   const userOpenId = ctx.request.query.userOpenId
-  if (userIpenId) {
+  if (!userOpenId) {
     throw new Error('用户未登录')
   }
 
@@ -132,22 +132,28 @@ const uncomplite = async function(ctx, next) {
     const models = await Order.findAll({
       where: {
         userOpenId: userOpenId,
-        status: 'ready',
-        include: [{
-          model: Details,
-          as: 'details',
-          include: [Commodity]
-        }, Address],
-        order: 'createAt DESC'
-      }
+        status: 'waitting'
+      },
+      order: [
+        ['createdAt', 'DESC']
+      ],
+      include: [{
+        model: Details,
+        include: [Commodity]
+      }, {
+        model: Address
+      }]
     })
+
+    const orders = models.map(model => {
+      return model.dataValues
+    })
+    ctx.state.data = orders
+    await next()
   } catch (err) {
     throw new Error('数据库异常')
   }
 
-  const orders = models.dataValues
-  ctx.state.data = orders
-  await next()
 }
 
 module.exports = {

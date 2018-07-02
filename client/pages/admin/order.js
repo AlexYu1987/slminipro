@@ -35,7 +35,7 @@ Page({
       fail: function(res) {
         wx.showModal({
           title: '获取订单失败',
-          content: res.data.error.message,
+          content: res.data.error,
         })
       }
     })
