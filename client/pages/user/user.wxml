@@ -1,8 +1,8 @@
 <view class="main">
   <view class="header">
     <image src="{{userinfo.avatarUrl}}" class="thumb"></image>
-    <text class="nickname">{{userinfo.nickName}}</text>
-    <text wx:if='{{userinfo.role=="user"}}'>余额：{{userinfo.balance}}</text>
+    <text class="nickname">{{userinfo.nickName + '  '}}</text>
+    <text wx:if='{{userinfo.role=="user"}}'>余额：{{userinfo.balance + ' '}}</text>
     <text wx:if='{{userinfo.role=="user"}}'>充值</text>
     <text class="about">关于我们</text>
   </view>
@@ -26,12 +26,11 @@
   <view wx:if='{{userinfo.role != admin}}' class="orders-box">
     <view class="orders">我的订单</view>
     <view class="orders-list" wx:for="{{orders}}" wx:key="index">
-      <view class="orders-number">订单编号：{{item.number}}</view>
+      <view class="orders-number">订单编号：{{item.id}}</view>
       <view class="orders-detail">
-        <view>收货人:{{item.name}}</view>
-        <view>电话:{{item.phone}}</view>
-        <view>商品清单:{{item.details}}</view>
-        <text class="orders-status">{{item.create}}</text>
+        <view>收货人:{{item.address.name}}</view>
+        <view>下单时间:{{item.createdAt}}</view>
+        <text class="orders-status">未发货</text>
       </view>
       <view class="orders-footer">
         <text>金额：￥{{item.total}}</text>

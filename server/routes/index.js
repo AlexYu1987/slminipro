@@ -29,5 +29,6 @@ router.get('/commodity/all', controllers.commodity.getAll)
 // --- 订单服务接口 Demo --- //
 router.post('/order/add', controllers.order.add)
 router.get('/order/uncomplite', controllers.order.uncomplite)
+router.get('/order/uncomplite/count', controllers.order.countUncomplite)
 
 module.exports = router

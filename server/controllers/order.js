@@ -145,18 +145,42 @@ const uncomplite = async function(ctx, next) {
       }]
     })
 
-    const orders = models.map(model => {
-      return model.dataValues
+    const orders = models.map(order => {    
+      const details = order.details.map(detail => {
+        const tmp = detail.commodity
+        detail = detail.dataValues
+        detail.commodity = tmp.dataValues
+        return detail
+      })
+      const address = order.address.dataValues
+      order = order.dataValues
+      order.details = details
+      order.address = address
+      return order
     })
     ctx.state.data = orders
     await next()
   } catch (err) {
     throw new Error('数据库异常')
   }
+}
 
+const countUncomplite = async function(ctx, next) {
+  try{
+    let number = await Order.count({
+      where: {status: 'waitting'}
+    })
+    ctx.state.data = number
+
+  } catch (err) {
+    ctx.status = 500
+    throw new Error('数据库异常')
+  }
+   
 }
 
 module.exports = {
   add,
-  uncomplite
+  uncomplite,
+  countUncomplite
 }

@@ -6,6 +6,7 @@ const {
   }
 } = require('../../config.js')
 const qcloud = require('../../vendor/wafer2-client-sdk/index')
+const util = require('../../utils/util.js')
 
 Page({
   data: {badge: 0},
@@ -27,13 +28,13 @@ Page({
           userOpenId: userinfo.openId
         },
         success: function(res) {
-          let orders = res.data
+          let orders = res.data.data
           that.mapOrders2toast(orders)
         },
         fail: function(res) {
           wx.showModal({
             title: '获取订单失败',
-            content: res.data.error.message,
+            content: res.error || res.errMsg,
           })
         }
       })
@@ -42,12 +43,12 @@ Page({
       qcloud.request({
         url: countUncompliteOrderUrl,
         success: function(res) {
-          that.setData({badge:res.data})
+          that.setData({badge:res.data.data})
         },
         fail: function(res) {
           wx.showModal({
             title: '获取订单数失败',
-            content: res.error.message,
+            content: res.error || res.errMsg,
           })
         }
       })
@@ -56,18 +57,14 @@ Page({
 
   mapOrders2toast(orders) {
     const toasts = orders.map(order => {
-      const result = {}
-      result.user = order.address.name
-      result.phone = order.address.phone
-      result.create = order.createdAt
-      result.total = order.total
-      result.details = ''
+      let list = ''
       order.details.forEach(detail => {
-        details + `${order.details.commodity.name}(数量：${order.details.commodity.count})  `
+        list += `${detail.commodity.name}X${detail.count}) `
       })
-      return result
+      order.list = list
+      order.createdAt = util.dataTimeFormatter(order.createdAt)
+      return order
     })
-
     this.setData({orders: toasts})
   }
 })
