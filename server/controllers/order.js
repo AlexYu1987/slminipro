@@ -124,28 +124,35 @@ const add = async function(ctx, next) {
 
 const uncomplite = async function(ctx, next) {
   const userOpenId = ctx.request.query.userOpenId
-  if (!userOpenId) {
-    throw new Error('用户未登录')
+  const offset = Number.parseInt(ctx.request.query.offset)
+  const limit = Number.parseInt(ctx.request.query.limit)
+
+  const opt = {
+    where: {
+      status: 'waitting'
+    },
+    order: [
+      ['createdAt']
+    ],
+    include: [{
+      model: Details,
+      include: [Commodity]
+    }, {
+      model: Address
+    }]
+  }
+
+  if (userOpenId) {
+    opt.where.userOpenId = userOpenId
+  }
+  if (typeof limit == 'number' && typeof offset == 'number') {
+    opt.limit = limit
+    opt.offset = offset
   }
 
   try {
-    const models = await Order.findAll({
-      where: {
-        userOpenId: userOpenId,
-        status: 'waitting'
-      },
-      order: [
-        ['createdAt', 'DESC']
-      ],
-      include: [{
-        model: Details,
-        include: [Commodity]
-      }, {
-        model: Address
-      }]
-    })
-
-    const orders = models.map(order => {    
+    const models = await Order.findAll(opt)
+    const orders = models.map(order => {
       const details = order.details.map(detail => {
         const tmp = detail.commodity
         detail = detail.dataValues
@@ -166,9 +173,15 @@ const uncomplite = async function(ctx, next) {
 }
 
 const countUncomplite = async function(ctx, next) {
-  try{
-    let number = await Order.count({
-      where: {status: 'waitting'}
+  try {
+    const userOpenId = ctx.request.query.userOpenId
+    const where = {
+      status: 'waitting'
+    }
+    if (userOpenId) where.userOpenId = userOpenId
+
+    const number = await Order.count({
+      where: where
     })
     ctx.state.data = number
 
@@ -176,7 +189,7 @@ const countUncomplite = async function(ctx, next) {
     ctx.status = 500
     throw new Error('数据库异常')
   }
-   
+
 }
 
 module.exports = {

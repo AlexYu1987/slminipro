@@ -7,7 +7,8 @@
     "pages/admin/add",
     "pages/orders/orders",
     "pages/admin/order",
-    "pages/admin/express"
+    "pages/admin/express",
+    "pages/orders/list"
   ],
   "window": {
     "navigationBarTextStyle": "#ffffff",
@@ -43,7 +44,7 @@
     ]
   },
   "networkTimeout": {
-    "request": 10000,
+    "request": 100000,
     "connectSocket": 10000,
     "uploadFile": 10000,
     "downloadFile": 10000

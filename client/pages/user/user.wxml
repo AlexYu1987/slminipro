@@ -1,42 +1,49 @@
 <view class="main">
   <view class="header">
     <image src="{{userinfo.avatarUrl}}" class="thumb"></image>
-    <text class="nickname">{{userinfo.nickName + '  '}}</text>
-    <text wx:if='{{userinfo.role=="user"}}'>余额：{{userinfo.balance + ' '}}</text>
-    <text wx:if='{{userinfo.role=="user"}}'>充值</text>
+    <text class="nickname">{{userinfo.nickName + '    '}}</text>
+    <text wx:if='{{userinfo.role=="user"}}'>余额：{{userinfo.balance}}</text>
     <text class="about">关于我们</text>
   </view>
 
-  <view wx:if='{{userinfo.role == "admin"}}' class="address-box">
-    <view class="address-manage">
-      <navigator url='/pages/admin/order'>新订单<view class="weui-badge" style="margin-left: 5px;">{{badge}}</view></navigator>
+  <!--管理员视图 -->
+  <block wx:if='{{userinfo.role == "admin"}}'>
+    <view class="address-box">
+      <view class="address-manage">
+        <navigator url='/pages/orders/list'>待处理订单
+          <view class="weui-badge" style="margin-left: 5px;">{{badge_order}}</view>
+        </navigator>
+      </view>
     </view>
-  </view>
-  <view wx:if='{{userinfo.role == "admin"}}' class="address-box">
-    <view class='address-manage'>
-      <navigator url='/pages/admin/add'>用户充值</navigator>
+    <view class="address-box">
+      <view class='address-manage'>
+        <navigator url='/pages/admin/add'>用户充值
+          <view class="weui-badge" style="margin-left: 5px;">{{badge_pay}}</view>
+        </navigator>
+      </view>
     </view>
-  </view>
-  <view wx:if="{{userinfo.role == 'admin'}}" class="address-box">
-    <view class="address-manage">
-      <navigator url="/pages/admin/add">添加新商品</navigator>
+    <view class="address-box">
+      <view class="address-manage">
+        <navigator url="/pages/admin/add">添加新商品</navigator>
+      </view>
     </view>
-  </view>
+  </block>
 
-  <view wx:if='{{userinfo.role != admin}}' class="orders-box">
-    <view class="orders">我的订单</view>
-    <view class="orders-list" wx:for="{{orders}}" wx:key="index">
-      <view class="orders-number">订单编号：{{item.id}}</view>
-      <view class="orders-detail">
-        <view>收货人:{{item.address.name}}</view>
-        <view>下单时间:{{item.createdAt}}</view>
-        <text class="orders-status">未发货</text>
-      </view>
-      <view class="orders-footer">
-        <text>金额：￥{{item.total}}</text>
+  <!--用户视图 -->
+  <block wx:if='{{userinfo.role != "admin"}}'>
+    <view class="address-box">
+      <view class="address-manage">
+        <navigator url="/pages/admin/pay">充值</navigator>
       </view>
     </view>
-  </view>
+    <view class="address-box">
+      <view class="address-manage">
+        <navigator url="/pages/orders/list">未完成订单
+          <view class="weui-badge" style="margin-left: 5px;">{{badge_order}}</view>
+        </navigator>
+      </view>
+    </view>
+  </block>
 
   <view class='address-box'>
     <view class='address-manage'>
