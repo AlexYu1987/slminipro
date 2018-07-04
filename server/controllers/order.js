@@ -13,6 +13,11 @@ const {
   Address
 } = require('../db/models.js')
 
+const {
+  rollbackOrder,
+  doOrder
+} = require('../service/orderService.js')
+
 const add = async function(ctx, next) {
   //Get openId from Session and search userInfo
   let openId = ctx.header['openid']
@@ -57,6 +62,7 @@ const add = async function(ctx, next) {
     attributes: ['discount', 'balance']
   })
   let user = uModel.dataValues
+  total = total * user.discount
   //Throw Error
   if (user.balance < total) throw Error('余额不足')
 
@@ -113,13 +119,14 @@ const add = async function(ctx, next) {
     user.balance = user.balance - total
     ctx.state.code = 200
     ctx.state.data = user
-    await next()
 
   } catch (error) {
     //rollback transaction
     t.rollback()
     throw new Error('生成订单失败')
   }
+
+  await next()
 }
 
 const uncomplite = async function(ctx, next) {
@@ -166,10 +173,10 @@ const uncomplite = async function(ctx, next) {
       return order
     })
     ctx.state.data = orders
-    await next()
   } catch (err) {
     throw new Error('数据库异常')
   }
+  await next()
 }
 
 const countUncomplite = async function(ctx, next) {
@@ -189,11 +196,37 @@ const countUncomplite = async function(ctx, next) {
     ctx.status = 500
     throw new Error('数据库异常')
   }
+  await next()
+}
 
+const deliver = async function(ctx, next) {
+  const {orderId, company, num, fee} = ctx.request.query
+  if(!orderId || !company) {
+    throw new Error('缺少参数')
+  }
+
+  if (fee && typeof fee != 'number') {
+    throw new Error('参数类型错误')
+  }
+
+  await doOrder(orderId, company, num, fee)
+  await next()
+}
+
+const rollback = async function(ctx, next) {
+  const orderId = ctx.request.query.orderId
+  if (!orderId) {
+    throw new Error('缺少参数')
+  }
+
+  await rollbackOrder(orderId)
+  await next()
 }
 
 module.exports = {
   add,
   uncomplite,
-  countUncomplite
+  countUncomplite,
+  deliver,
+  rollback
 }

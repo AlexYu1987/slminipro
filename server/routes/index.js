@@ -30,5 +30,7 @@ router.get('/commodity/all', controllers.commodity.getAll)
 router.post('/order/add', controllers.order.add)
 router.get('/order/uncomplite', controllers.order.uncomplite)
 router.get('/order/uncomplite/count', controllers.order.countUncomplite)
+router.get('/order/deliver', controllers.order.deliver)
+router.get('/order/rollback', controllers.order.rollback)
 
 module.exports = router
