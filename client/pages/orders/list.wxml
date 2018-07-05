@@ -1,26 +1,21 @@
 <!--pages/orders/list.wxml-->
 <view class="page">
-  <view class='page__hd'>
-    <view class="page__title">未完成订单</view>
-  </view>
-
   <scroll-view class='page__bd' scroll-top="{{scrollTop}}" scroll-y="true" style="height:{{scrollHeight}}px;padding:10rpx" bindscrolltolower="bindDownLoad" bindscroll="scroll" bindscrolltoupper="refresh">
     
-
-      <view class="weui-form-preview" wx:for='{{orders}}' wx:key="index">
-        <view class="weui-form-preview__hd">
-          <view class="weui-form-preview__label">订单号</view>
-          <view class="weui-form-preview__value_in-hd">¥{{item.id}}</view>
+      <view wx:for='{{orders}}' wx:key="index" class='order-box'>
+        <view class='head'>
+          <view>订单号</view>
+          <view>¥{{item.id}}</view>
           <!-- <view class="weui-form-preview__label">付款金额</view>
           <view class="weui-form-preview__value_in-hd">¥{{item.total}}</view> -->
         </view>
-        <view class="weui-form-preview__bd">
-          <view class="weui-form-preview__item" wx:for='{{item.details}}' wx:key="index">
-            <view class="weui-form-preview__label">{{item.commodity.name}}</view>
-            <view class="weui-form-preview__value">{{item.count}}</view>
+        <view class='body'>
+          <view wx:for='{{item.details}}' wx:key="index">
+            <view>{{item.commodity.name}}</view>
+            <view>{{item.count}}</view>
           </view>
         </view>
-        <view class="weui-form-preview__ft" wx:if='{{userinfo.role =="admin"}}'>
+        <view wx:if='{{userinfo.role =="admin"}}'>
           <navigator url="" class="weui-form-preview__btn weui-form-preview__btn_primary" hover-class="weui-form-preview__btn_active">操作</navigator>
         </view>
       </view>
