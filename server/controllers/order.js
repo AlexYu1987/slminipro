@@ -129,15 +129,14 @@ const add = async function(ctx, next) {
   await next()
 }
 
-const uncomplite = async function(ctx, next) {
+const query = async function(ctx, next) {
   const userOpenId = ctx.request.query.userOpenId
+  const condition = ctx.request.query.condition
   const offset = Number.parseInt(ctx.request.query.offset)
   const limit = Number.parseInt(ctx.request.query.limit)
 
   const opt = {
-    where: {
-      status: 'waitting'
-    },
+    where: {},
     order: [
       ['createdAt']
     ],
@@ -152,6 +151,11 @@ const uncomplite = async function(ctx, next) {
   if (userOpenId) {
     opt.where.userOpenId = userOpenId
   }
+
+  if(condition) {
+    opt.where.status = condition
+  }
+
   if (typeof limit == 'number' && typeof offset == 'number') {
     opt.limit = limit
     opt.offset = offset
@@ -225,7 +229,7 @@ const rollback = async function(ctx, next) {
 
 module.exports = {
   add,
-  uncomplite,
+  query,
   countUncomplite,
   deliver,
   rollback

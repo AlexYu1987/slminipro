@@ -1,29 +1,51 @@
 <!--pages/orders/list.wxml-->
-<view class="page">
-  <scroll-view class='page__bd' scroll-top="{{scrollTop}}" scroll-y="true" style="height:{{scrollHeight}}px;padding:10rpx" bindscrolltolower="bindDownLoad" bindscroll="scroll" bindscrolltoupper="refresh">
-    
-      <view wx:for='{{orders}}' wx:key="index" class='order-box'>
-        <view class='head'>
-          <view>订单号</view>
-          <view>¥{{item.id}}</view>
-          <!-- <view class="weui-form-preview__label">付款金额</view>
-          <view class="weui-form-preview__value_in-hd">¥{{item.total}}</view> -->
+<view class='page'>
+  <view class="weui-tab">
+    <view class="weui-navbar boder-bot">
+      <block wx:for="{{tabs}}" wx:key="*this">
+        <view id="{{index}}" class="weui-navbar__item {{activeIndex == index ? 'weui-bar__item_on' : ''}}" bindtap="tabClick">
+          <view class="weui-navbar__title">{{item.title}}</view>
         </view>
-        <view class='body'>
-          <view wx:for='{{item.details}}' wx:key="index">
-            <view>{{item.commodity.name}}</view>
-            <view>{{item.count}}</view>
+      </block>
+      <view class="weui-navbar__slider" style="left: {{sliderLeft}}px; transform: translateX({{sliderOffset}}px); -webkit-transform: translateX({{sliderOffset}}px);">
+      </view>
+    </view>
+    <view class="weui-tab__panel">
+      <scroll-view scroll-top="{{scrollTop}}" scroll-y="true" style="height:{{scrollHeight}}px" bindscrolltolower="bindDownLoad" bindscroll="scroll" bindscrolltoupper="refresh">
+        <view wx:for='{{orders}}' wx:key="index" class='weui-form-preview boder-bot'>
+          <view class='weui-form-preview__hd'>
+            <view class="weui-form-preview__item">
+              <view class="weui-form-preview__label">订单号</view>
+              <view class="weui-form-preview__value address">{{item.id}}</view>
+            </view>
+          </view>
+          <view class="weui-form-preview__bd">
+            <view wx:for='{{item.details}}' wx:key="index" class="weui-form-preview__item">
+              <view class="weui-form-preview__label">{{item.commodity.name}}</view>
+              <view class="weui-form-preview__value">{{item.count}}</view>
+            </view>
+            <view class='weui-form-preview__item'>
+              <view class="weui-form-preview__label">收货地址</view>
+              <view class="weui-form-preview__value address"> {{item.address.province + ' ' + item.address.city + ' ' + item.address.distribute + ' ' + item.address.street + ' ' + item.address.name + ' 收 ' + '电话 ' + item.address.phone}}</view>
+            </view>
+            <view class='weui-form-preview__item'>
+              <view class="weui-form-preview__label">总额</view>
+              <view class="weui-form-preview__value">¥{{item.total}}</view>
+            </view>
+          </view>
+          <view class="weui-form-preview__ft">
+            <navigator wx:if='{{userinfo.role =="user"}}' class="weui-form-preview__btn weui-form-preview__btn_default" hover-class="weui-form-preview__btn_active">联系商家</navigator>
+            <navigator wx:if='{{userinfo.role =="user"}}' class="weui-form-preview__btn weui-form-preview__btn_primary" hover-class="weui-form-preview__btn_active">继续购物</navigator>
+            <navigator wx:if='{{userinfo.role =="admin"}}' class="weui-form-preview__btn weui-form-preview__btn_default" hover-class="weui-form-preview__btn_active">打回</navigator>
+            <navigator wx:if='{{userinfo.role =="admin"}}' class="weui-form-preview__btn weui-form-preview__btn_primary" hover-class="weui-form-preview__btn_active">发货</navigator>
           </view>
         </view>
-        <view wx:if='{{userinfo.role =="admin"}}'>
-          <navigator url="" class="weui-form-preview__btn weui-form-preview__btn_primary" hover-class="weui-form-preview__btn_active">操作</navigator>
+        <view>
+          <loading hidden="{{hidden}}">
+            加载中...
+          </loading>
         </view>
-      </view>
-
-    <view>
-      <loading hidden="{{hidden}}">
-        加载中...
-      </loading>
+      </scroll-view>
     </view>
-  </scroll-view>
+  </view>
 </view>

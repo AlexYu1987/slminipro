@@ -27,7 +27,7 @@ var config = {
     queryAllCommodityUrl: `${host}/weapp/commodity/all`,
 
     submitOrderUrl: `${host}/weapp/order/add`,
-    queryUncompliteOrdersUrl: `${host}/weapp/order/uncomplite`,
+    queryOrderUrl: `${host}/weapp/order/query`,
     countUncompliteOrderUrl: `${host}/weapp/order/uncomplite/count`,
     queryOrderById: '${host}/weapp/order'
   }

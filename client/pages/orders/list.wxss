@@ -1,35 +1,11 @@
 /* pages/orders/list.wxss */
+@import '../common/weui.wxss';
 @import '../common/common.wxss';
 
-.order-box {
-  position: relative;
-  border-bottom:20rpx solid #ededed;
+.boder-bot {
+  border-bottom: 20rpx solid #ededed;
 }
 
-.order-box::before {
-  top: 0;
-  border-top: 1rpx solid #d9d9d9;
+.address {
+  text-align: left;
 }
-
-.order-box::after {
-  bottom: 0;
-  border-bottom: 1rpx solid #d9d9d9;
-}
-
-.order-box::after, .order-list::before {
-  content: " ";
-  position: absolute;
-  left: 0;
-  right: 0;
-  height: 1px;
-  color: #d9d9d9;
-}
-
-.order-box .head{
-  
-}
-
-.order-box .body{
-
-}
-
