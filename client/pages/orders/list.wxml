@@ -34,10 +34,10 @@
             </view>
           </view>
           <view class="weui-form-preview__ft">
-            <navigator wx:if='{{userinfo.role =="user"}}' class="weui-form-preview__btn weui-form-preview__btn_default" hover-class="weui-form-preview__btn_active">联系商家</navigator>
-            <navigator wx:if='{{userinfo.role =="user"}}' class="weui-form-preview__btn weui-form-preview__btn_primary" hover-class="weui-form-preview__btn_active">继续购物</navigator>
-            <navigator wx:if='{{userinfo.role =="admin"}}' class="weui-form-preview__btn weui-form-preview__btn_default" hover-class="weui-form-preview__btn_active">打回</navigator>
-            <navigator wx:if='{{userinfo.role =="admin"}}' class="weui-form-preview__btn weui-form-preview__btn_primary" hover-class="weui-form-preview__btn_active">发货</navigator>
+            <navigator wx:if='{{userinfo.role =="user"}}' url="" class="weui-form-preview__btn weui-form-preview__btn_default" hover-class="weui-form-preview__btn_active">联系商家</navigator>
+            <navigator wx:if='{{userinfo.role =="user"}}' url="/pages/index" class="weui-form-preview__btn weui-form-preview__btn_primary" hover-class="weui-form-preview__btn_active">继续购物</navigator>
+            <navigator wx:if='{{userinfo.role =="admin"}}' class="weui-form-preview__btn weui-form-preview__btn_default" hover-class="weui-form-preview__btn_active" bindtap='rollbackOrder'>打回</navigator>
+            <navigator wx:if='{{userinfo.role =="admin"}}' class="weui-form-preview__btn weui-form-preview__btn_primary" hover-class="weui-form-preview__btn_active" bindtap='processOrder'>发货</navigator>
           </view>
         </view>
         <view>

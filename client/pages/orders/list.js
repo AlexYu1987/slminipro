@@ -30,7 +30,7 @@ Page({
     sliderOffset: 0,
     sliderLeft: 0,
     page: 0,
-    pageSize: 10,
+    pageSize: 100,
     orders: []
   },
 
@@ -86,6 +86,16 @@ Page({
       orders: []
     })
     getList(getCondition(this), this)
+  },
+
+  processOrder: function(event) {
+    wx.showModal({
+      title: ''
+    })
+  },
+
+  rollbackOrder: function(event) {
+
   }
 })
 
