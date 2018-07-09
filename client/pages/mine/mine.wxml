@@ -10,21 +10,21 @@
   <block wx:if='{{userinfo.role == "admin"}}'>
     <view class="address-box">
       <view class="address-manage">
-        <navigator url='/pages/orders/list'>待处理订单
+        <navigator url='/pages/admin/orders/orders'>待处理订单
           <view class="weui-badge" style="margin-left: 5px;">{{badge_order}}</view>
         </navigator>
       </view>
     </view>
     <view class="address-box">
       <view class='address-manage'>
-        <navigator url='/pages/admin/add'>用户充值
+        <navigator url='/pages/admin/recharge/recharge'>用户充值
           <view class="weui-badge" style="margin-left: 5px;">{{badge_pay}}</view>
         </navigator>
       </view>
     </view>
     <view class="address-box">
       <view class="address-manage">
-        <navigator url="/pages/admin/add">添加新商品</navigator>
+        <navigator url="/pages/admin/addgoods/index">添加新商品</navigator>
       </view>
     </view>
   </block>
@@ -38,16 +38,10 @@
     </view>
     <view class="address-box">
       <view class="address-manage">
-        <navigator url="/pages/orders/list">未完成订单
+        <navigator url="/pages/orders/list">我的订单
           <view class="weui-badge" style="margin-left: 5px;">{{badge_order}}</view>
         </navigator>
       </view>
     </view>
   </block>
-
-  <view class='address-box'>
-    <view class='address-manage'>
-      <navigator url="">历史订单</navigator>
-    </view>
-  </view>
 </view>

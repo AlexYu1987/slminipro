@@ -1,8 +1,8 @@
-import WxValidate from '../common/Validator.js'
+import WxValidate from '../../common/Validator.js'
 
-const {showBusy,showSuccess,showModal} = require('../../utils/util.js')
-const {service: {uploadUrl,addCommodityUrl}} = require('../../config.js')
-const qcloud = require('../../vendor/wafer2-client-sdk/index')
+const {showBusy,showSuccess,showModal} = require('../../../utils/util.js')
+const {service: {uploadUrl,addCommodityUrl}} = require('../../../config.js')
+const qcloud = require('../../../vendor/wafer2-client-sdk/index.js')
 
 Page({
   data: {

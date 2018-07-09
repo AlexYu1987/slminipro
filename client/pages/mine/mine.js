@@ -44,20 +44,5 @@ Page({
         })
       }
     })
-  },
-
-  mapOrders2toast(orders) {
-    const toasts = orders.map(order => {
-      let list = ''
-      order.details.forEach(detail => {
-        list += `${detail.commodity.name}X${detail.count}) `
-      })
-      order.list = list
-      order.createdAt = util.dataTimeFormatter(order.createdAt)
-      return order
-    })
-    this.setData({
-      orders: toasts
-    })
   }
 })

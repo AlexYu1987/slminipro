@@ -2,13 +2,13 @@
   "pages": [
     "pages/index/index",
     "pages/cart/cart",
-    "pages/user/user",
+    "pages/mine/mine",
     "pages/details/details",
-    "pages/admin/add",
+    "pages/admin/addgoods/index",
+    "pages/admin/recharge/recharge",
     "pages/orders/orders",
-    "pages/admin/order",
-    "pages/admin/express",
-    "pages/orders/list"
+    "pages/orders/list",
+    "pages/admin/orders/orders"
   ],
   "window": {
     "navigationBarTextStyle": "#ffffff",
@@ -36,10 +36,10 @@
         "text": "购物车"
       },
       {
-        "pagePath": "pages/user/user",
+        "pagePath": "pages/mine/mine",
         "iconPath": "images/42.png",
         "selectedIconPath": "images/41.png",
-        "text": "用户中心"
+        "text": "我的"
       }
     ]
   },

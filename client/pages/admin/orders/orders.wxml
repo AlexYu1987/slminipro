@@ -1,0 +1,18 @@
+<import src='../../../template/order/orderPreview.wxml' />
+
+<view class='page'>
+  <!-- 页标签-->
+  <view class="weui-tab">
+    <view class="weui-navbar boder-bot">
+      <block wx:for="{{tabs}}" wx:key="*this">
+        <view id="{{index}}" class="weui-navbar__item {{activeIndex == index ? 'weui-bar__item_on' : ''}}" bindtap="tabClick">
+          <view class="weui-navbar__title">{{item.title}}</view>
+        </view>
+      </block>
+      <view class="weui-navbar__slider" style="left: {{sliderLeft}}px; transform: translateX({{sliderOffset}}px); -webkit-transform: translateX({{sliderOffset}}px);">
+      </view>
+    </view>
+  </view>
+  <!-- 标签内容 -->
+  
+</view>

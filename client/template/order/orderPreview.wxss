@@ -1,0 +1,7 @@
+.boder-bot {
+  border-bottom: 20rpx solid #ededed;
+}
+
+.address {
+  text-align: left;
+}
