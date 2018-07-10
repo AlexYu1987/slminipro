@@ -24,12 +24,14 @@ var config = {
     uploadUrl: `${host}/weapp/upload`,
 
     addCommodityUrl: `${host}/weapp/commodity/add`,
+    delCommodityUrl: `${host}/weapp/commodity/del`,
     queryAllCommodityUrl: `${host}/weapp/commodity/all`,
 
     submitOrderUrl: `${host}/weapp/order/add`,
     queryOrderUrl: `${host}/weapp/order/query`,
     countUncompliteOrderUrl: `${host}/weapp/order/uncomplite/count`,
-    queryOrderById: '${host}/weapp/order'
+    queryOrderById: '${host}/weapp/order',
+    queryAllOrdersUrl: '${host}/weapp/order/query/all',
   }
 };
 

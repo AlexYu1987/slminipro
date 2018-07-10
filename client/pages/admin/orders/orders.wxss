@@ -1,7 +1,7 @@
 /* pages/orders/list.wxss */
 @import '../../common/weui.wxss';
 @import '../../common/common.wxss';
-@import '../../../template/order/orderPreview.wxss';
+@import '../../template/order/orderPreview.wxss';
 
 .boder-bot {
   border-bottom: 20rpx solid #ededed;

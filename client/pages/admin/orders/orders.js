@@ -1,66 +1,114 @@
-// pages/admin/orders/orders.js
+const qcloud = require('../../../vendor/wafer2-client-sdk/index.js')
+const { service: { queryAllOrdersUrl}} = require('../../../config.js')
+
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-  
+    waitting: [],
+    all: [],
+    tabs: [{
+      title: '待处理',
+      condition:{status: 'waitting', orderBy: 'createdAt ASC'},
+      page: 0,
+      pageSize: 10,
+      hidden: true,
+      orders: [],
+    }, {
+      title: '所有订单',
+      condition: { status: null, orderBy: 'createdAt DESC' },
+      page: 0,
+      pageSize: 10,
+      hidden: true,
+      orders: [],
+    }],
+    activeIndex: 0,
+    sliderOffset: 0,
+    sliderLeft: 0,
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function (options) {
-  
+  onLoad: function(options) {
+    var that = this
+    wx.getSystemInfo({
+      success: function(res) {
+        that.setData({
+          scrollHeight: res.windowHeight,
+          sliderLeft: (res.windowWidth / that.data.tabs.length - sliderWidth) / 2,
+          sliderOffset: res.windowWidth / that.data.tabs.length * that.data.activeIndex,
+        })
+      },
+    })
   },
 
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-  
+  onShow: function() {
+    this.data.tabs.forEach(tab => getList(tab))
   },
 
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-  
+  tabClick: function(e) {
+    this.setData({
+      sliderOffset: e.currentTarget.offsetLeft,
+      activeIndex: e.currentTarget.id
+    })
   },
 
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-  
+  bindDownload: function(e) {
+    const that = this
+    const i = e.currentTarget.id
+    const tab = this.data.tabs[i]
+    getList(tab)
   },
 
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-  
+  scroll: function(e) {
+    const i = e.currentTarget.id
+    const tab = this.data.tabs[i]  
+    tab.scrollTop = e.detail.scrollTop
   },
 
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-  
+  refresh: function(e) {
+    const i = e.currentTarget.id
+    const tab = this.data.tabs[i]
+    tab.page = 0
+    tab.scrollTop = 0
+    tab.orders = []
+    getList(tab)
   },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-  
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-  
-  }
 })
+
+const getList = function(tab) {
+  tab.hidden = false
+  const data = {}
+
+  if (tab.condition.status) {
+    data.status = tab.condition.status
+  }
+
+  data.orderBy = tab.condition.orderBy
+  data.offset = tab.page * tab.pageSize
+  data.limit = tab.pageSize
+
+  qcloud.request({
+    url: queryAllOrdersUrl,
+    data: data,
+
+    success: res => {
+      tab.page += 1
+      tab.orders.push(...res.data.data)
+      tab.hidden = true
+    },
+
+    fail: res => {
+      wx.showModal({
+        title: '加载失败',
+        content: res.errMsg,
+        success: () => {
+          tab.hidden = true
+        }
+      })
+    }
+  })
+}

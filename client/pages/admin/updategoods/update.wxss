@@ -1,0 +1,2 @@
+@import '../../common/weui.wxss';
+@import '../../common/common.wxss';

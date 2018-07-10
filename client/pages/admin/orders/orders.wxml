@@ -1,4 +1,4 @@
-<import src='../../../template/order/orderPreview.wxml' />
+<import src='../../template/order/orderPreview.wxml' />
 
 <view class='page'>
   <!-- 页标签-->
@@ -14,5 +14,35 @@
     </view>
   </view>
   <!-- 标签内容 -->
-  
+  <view class="weui-tab__panel">
+    <!-- 页签一 -->
+    <scroll-view id='0' scroll-top="{{tabs[0].scrollTop}}" scroll-y="true" style="height:{{scrollHeight}}px" bindscrolltolower="bindDownLoad" bindscroll="scroll" bindscrolltoupper="refresh" hidden="{{activeIndex != 0}}">
+      <view wx:for='{{tabs[0].orders}}' wx:key="index" class='weui-form-preview boder-bot'>
+        <template is='orderPreview' data='{{order:item}}' />
+        <view class="weui-form-preview__ft">
+          <navigator class="weui-form-preview__btn weui-form-preview__btn_default" hover-class="weui-form-preview__btn_active" bindtap='rollbackOrder'>打回</navigator>
+          <navigator class="weui-form-preview__btn weui-form-preview__btn_primary" hover-class="weui-form-preview__btn_active" bindtap='processOrder'>发货</navigator>
+        </view>
+      </view>
+      <view>
+        <loading hidden="{{tabs[0].hidden}}">
+          加载中...
+        </loading>
+      </view>
+    </scroll-view>
+    <!-- 页签二 -->
+    <scroll-view id='1' scroll-top="{{tabs[1].scrollTop}}" scroll-y="true" style="height:{{scrollHeight}}px" bindscrolltolower="bindDownLoad" bindscroll="scroll" bindscrolltoupper="refresh" hidden="{{activeIndex != 1}}">
+      <view wx:for='{{tabs[1].orders}}' wx:key="index" class='weui-form-preview boder-bot'>
+        <template is='orderPreview' data='{{order:item}}' />
+        <view class="weui-form-preview__ft">
+          <navigator class="weui-form-preview__btn weui-form-preview__btn_primary" hover-class="weui-form-preview__btn_active" bindtap='processOrder'>联系买家</navigator>
+        </view>
+      </view>
+      <view>
+        <loading hidden="{{tabs[1].hidden}}">
+          加载中...
+        </loading>
+      </view>
+    </scroll-view>
+  </view>
 </view>

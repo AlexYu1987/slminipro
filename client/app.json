@@ -8,7 +8,8 @@
     "pages/admin/recharge/recharge",
     "pages/orders/orders",
     "pages/orders/list",
-    "pages/admin/orders/orders"
+    "pages/admin/orders/orders",
+    "pages/admin/updategoods/update"
   ],
   "window": {
     "navigationBarTextStyle": "#ffffff",
