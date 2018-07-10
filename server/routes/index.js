@@ -25,10 +25,12 @@ router.post('/upload', controllers.upload)
 router.post('/commodity/add', controllers.commodity.add)
 //查询所有商品
 router.get('/commodity/all', controllers.commodity.getAll)
+router.post('/commodity/del', controllers.commodity.delById)
 
 // --- 订单服务接口 Demo --- //
 router.post('/order/add', controllers.order.add)
 router.get('/order/query', controllers.order.query)
+router.get('/order/query/all', controllers.order.queryAll)
 router.get('/order/uncomplite/count', controllers.order.countUncomplite)
 router.get('/order/deliver', controllers.order.deliver)
 router.get('/order/rollback', controllers.order.rollback)

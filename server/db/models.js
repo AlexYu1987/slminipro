@@ -4,7 +4,9 @@
  * Updated by: Alex.Y (6/28/2018)
  */
 const Sequelize = require('sequelize')
-const { mysql: config } = require('../config.js')
+const {
+  mysql: config
+} = require('../config.js')
 
 const sequelize = new Sequelize(config.db, config.user, config.pass, {
   dialect: 'mysql'
@@ -113,6 +115,8 @@ const Commodity = sequelize.define('commodity', {
     'type': Sequelize.FLOAT,
     'allowNull': false
   }
+}, {
+  paranoid: true
 });
 
 const Details = sequelize.define('details', {
@@ -161,7 +165,16 @@ Order.hasMany(Details)
 Details.belongsTo(Commodity)
 
 module.exports = {
-  User, Address, Express, Commodity, Order, Details, Sequelize, sequelize,
+  User,
+  Address,
+  Express,
+  Commodity,
+  Order,
+  Details,
+  Sequelize,
+  sequelize,
   buildAll: () => sequelize.sync(),
-  rebuildAll: () => sequelize.sync({ force: true })
+  rebuildAll: () => sequelize.sync({
+    force: true
+  })
 }

@@ -1,7 +1,8 @@
 /**
- *  Order service
+ *  Order service 
+ *  Use Sequelize model to oprate database.
  *  Created by: Alex.Y (2018/7/4)
- *  Update by:
+ *  Update by: Alex.Y (2018/7/10)
  */
 
 const {
@@ -147,7 +148,61 @@ const rollbackOrder = async function(orderId, transaction) {
   }
 }
 
+/**
+ * Query all orders nested Details and Address,
+ * Details also nested Commodity query, order by createAt .
+ * @Param [offset, limit] required
+ * @Param [status, openId, order] optional
+ */
+const pagedQuery = async function(offset, limit, status, openId, orderBy) {
+  const opt = {
+    where: {},
+    include: [{
+      model: Details,
+      include: [Commodity]
+    }, {
+      model: Address
+    }]
+  }
+
+  opt.limit = limit
+  opt.offset = offset
+
+  if (openId) {
+    opt.where.userOpenId = openId
+  }
+
+  if (status) {
+    opt.where.status = status
+  }
+
+  if(orderBy) {
+    opt.order = [orderBy]
+  }
+
+  try {
+    const models = await Order.findAll(opt)
+    const orders = models.map(order => {
+      const details = order.details.map(detail => {
+        const tmp = detail.commodity
+        detail = detail.dataValues
+        detail.commodity = tmp.dataValues
+        return detail
+      })
+      const address = order.address.dataValues
+      order = order.dataValues
+      order.details = details
+      order.address = address
+      return order
+    })
+    return orders
+  } catch (err) {
+    throw new Error('数据库异常')
+  }
+}
+
 module.exports = {
   rollbackOrder,
-  doOrder
+  doOrder,
+  pagedQuery,
 }

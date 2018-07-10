@@ -1,11 +1,15 @@
 /*
  * 处理commodity请求
- * Created by: Alex.Y
- * /2018/6/19
+ * Created by: Alex.Y (2018/6/19)
+ * Updated by: Alex.Y (2018/7/10)
  */
 const {
   Commodity
 } = require('../db/models.js')
+
+const {
+  deleteById
+} = require('../service/commodityService.js')
 
 const add = function(ctx, next) {
   try {
@@ -51,10 +55,23 @@ const getAll = function(ctx, next) {
     ctx.state.code = 500
     ctx.state.data = '数据库错误'
   })
+}
 
+const delById = async function(ctx, next) {
+  const {
+    id
+  } = ctx.request.body
+
+  if (!id) {
+    throw new Error('缺少参数')
+  }
+
+  await deleteById(id)
+  await next()
 }
 
 module.exports = {
   add,
-  getAll
+  getAll,
+  delById,
 }

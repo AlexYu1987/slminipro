@@ -15,7 +15,8 @@ const {
 
 const {
   rollbackOrder,
-  doOrder
+  doOrder,
+  pagedQuery,
 } = require('../service/orderService.js')
 
 const add = async function(ctx, next) {
@@ -183,6 +184,9 @@ const query = async function(ctx, next) {
   await next()
 }
 
+/**
+ * Count orders which is waitting to process
+ */
 const countUncomplite = async function(ctx, next) {
   try {
     const userOpenId = ctx.request.query.userOpenId
@@ -203,6 +207,28 @@ const countUncomplite = async function(ctx, next) {
   await next()
 }
 
+/**
+ * Query all user's order information
+ */
+const queryAll = async function(ctx, next) {
+  const {status, offset, limit, order, openId, orderBy} = ctx.request.query
+
+  if (typeof(Number.parseInt(offset)) != 'number' || typeof(Number.parseInt(limit)) != 'number') {
+    throw new Error('缺少参数或参数类型错误')
+  }
+
+  if(typeof(orderBy) == 'string') {
+    orderBy = orderBy.split(' ', 2)
+  }
+
+  const orders = await pagedQuery(offset, limit, status, null, orderBy)
+  ctx.state.data = orders
+  await next()
+}
+
+/**
+ * Process the order
+ */
 const deliver = async function(ctx, next) {
   const {orderId, company, num, fee} = ctx.request.query
   if(!orderId || !company) {
@@ -217,6 +243,9 @@ const deliver = async function(ctx, next) {
   await next()
 }
 
+/**
+ * Cancel the order
+ */
 const rollback = async function(ctx, next) {
   const orderId = ctx.request.query.orderId
   if (!orderId) {
@@ -232,5 +261,6 @@ module.exports = {
   query,
   countUncomplite,
   deliver,
-  rollback
+  rollback,
+  queryAll,
 }
