@@ -217,11 +217,12 @@ const queryAll = async function(ctx, next) {
     throw new Error('缺少参数或参数类型错误')
   }
 
+  let order;
   if(typeof(orderBy) == 'string') {
-    orderBy = orderBy.split(' ', 2)
+    order = orderBy.split(' ', 2)
   }
 
-  const orders = await pagedQuery(offset, limit, status, null, orderBy)
+  const orders = await pagedQuery(offset, limit, status, null, order)
   ctx.state.data = orders
   await next()
 }

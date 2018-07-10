@@ -1,5 +1,6 @@
 const qcloud = require('../../../vendor/wafer2-client-sdk/index.js')
 const { service: { queryAllOrdersUrl}} = require('../../../config.js')
+const sliderWidth = 96; // 需要设置slider的宽度，用于计算中间位置
 
 Page({
 
@@ -104,7 +105,7 @@ const getList = function(tab) {
     fail: res => {
       wx.showModal({
         title: '加载失败',
-        content: res.errMsg,
+        content: res.data.errMsg,
         success: () => {
           tab.hidden = true
         }

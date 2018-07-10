@@ -30,8 +30,8 @@ var config = {
     submitOrderUrl: `${host}/weapp/order/add`,
     queryOrderUrl: `${host}/weapp/order/query`,
     countUncompliteOrderUrl: `${host}/weapp/order/uncomplite/count`,
-    queryOrderById: '${host}/weapp/order',
-    queryAllOrdersUrl: '${host}/weapp/order/query/all',
+    queryOrderById: `${host}/weapp/order`,
+    queryAllOrdersUrl: `${host}/weapp/order/query/all`,
   }
 };
 

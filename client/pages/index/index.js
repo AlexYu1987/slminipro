@@ -80,7 +80,7 @@ Page({
       success: function (res) {
         let result = res.data
         if (result.code == 500) {
-          showModal('无法获取商品列表', result.error.message)
+          showModal('无法获取商品列表', result.errMsg)
           return
         }
         //根据用户折扣计算商品价格
