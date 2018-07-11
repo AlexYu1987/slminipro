@@ -20,8 +20,11 @@
       <view wx:for='{{tabs[0].orders}}' wx:key="index" class='weui-form-preview boder-bot'>
         <template is='orderPreview' data='{{order:item}}' />
         <view class="weui-form-preview__ft">
-          <navigator class="weui-form-preview__btn weui-form-preview__btn_default" hover-class="weui-form-preview__btn_active" bindtap='rollbackOrder'>打回</navigator>
-          <navigator class="weui-form-preview__btn weui-form-preview__btn_primary" hover-class="weui-form-preview__btn_active" bindtap='processOrder'>发货</navigator>
+          <navigator id='{{item.id}}' class="weui-form-preview__btn weui-form-preview__btn_default" hover-class="weui-form-preview__btn_active" bindtap='rollbackOrder'>打回</navigator>
+          <navigator class="weui-form-preview__btn weui-form-preview__btn_primary" hover-class="weui-form-preview__btn_active" 
+          url='../send/send?orderId={{item.id}}&address={{JSON.stringfy(item.address)}}'>
+          发货
+          </navigator>
         </view>
       </view>
       <view>

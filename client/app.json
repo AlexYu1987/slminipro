@@ -9,7 +9,9 @@
     "pages/orders/orders",
     "pages/orders/list",
     "pages/admin/orders/orders",
-    "pages/admin/updategoods/update"
+    "pages/admin/updategoods/update",
+    "pages/admin/send/send",
+    "pages/user/balance/balance"
   ],
   "window": {
     "navigationBarTextStyle": "#ffffff",

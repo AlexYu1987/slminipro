@@ -1,0 +1,39 @@
+<!--pages/user/balance/balance.wxml-->
+<view class='page'>
+  <view class="page__hd">
+    <view class="page__title">充值</view>
+    <view class="page__desc">充值请联系管理员，并把自己的ID发送给管理员</view>
+  </view>
+  <view class="page__bd">
+  <!--用户信息 -->
+    <view class="weui-panel weui-panel_access">
+      <view class="weui-panel__hd">我的信息</view>
+      <view class="weui-panel__bd">
+        <view class="weui-media-box weui-media-box_text">
+          <view class="weui-media-box__title weui-media-box__title_in-text">{{user.nickName}}</view>
+          <view class="weui-media-box__desc">我的ID：{{user.openId}}</view>
+        </view>
+      </view>
+      <view class="weui-panel__ft">
+        <view class="weui-cell weui-cell_access weui-cell_link">
+          <view class="weui-cell__bd">复制ID</view>
+        </view>
+      </view>
+    </view>
+    <!--管理员列表-->
+    <view class="weui-panel weui-panel_access">
+      <view class="weui-panel__hd">管理员列表</view>
+      <view class="weui-panel__bd">
+        <navigator wx:for='{{adminList}}' wx:key='index' url="" class="weui-media-box weui-media-box_appmsg" hover-class="weui-cell_active">
+          <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
+            <image class="weui-media-box__thumb" src="{{item.avatarUrl}}" />
+          </view>
+          <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
+            <view class="weui-media-box__title">{{item.nickName}}</view>
+            <view class="weui-media-box__desc">{{item.description}}</view>
+          </view>
+        </navigator>
+      </view>
+    </view>
+  </view>
+</view>

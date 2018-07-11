@@ -5,7 +5,8 @@
  */
 
 const {
-  User
+  User,
+  sequelize,
 } = require('../db/models.js')
 
 const sliderWidth = 96; // 需要设置slider的宽度，用于计算中间位置
@@ -34,14 +35,18 @@ const updateUserById = async function(openId, balance, discount) {
 
 /**
  * Find all users.
+ * @param [offset, limit] required
  * return raw types
  */
-const pagedFindAll = async function(offset, limit) {
-  const users = await findAll({
-    raw: true,
-    offset: offset,
-    limit: limit,
+const pagedFind = async function(offset, limit) {
+  let queryClause = 'SELECT a.open_id AS openId, a.user_info AS userInfo, b.balance AS balance, b.discount AS discount, \
+    b.role AS role From cSessionInfo a INNER JOIN users b ON(a.open_id = b.openId) LIMIT ?, ?'
+
+  let users = await sequelize.query(queryClause, {
+    type: sequelize.QueryTypes.SELECT,
+    replacements: [offset, limit]
   })
+
   return users
 }
 

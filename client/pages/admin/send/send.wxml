@@ -1,0 +1,60 @@
+<!--pages/admin/send/send.wxml-->
+<view class='page'>
+
+  <view class='page__hd'>
+    <view class='page__title'>填写快递信息</view>
+    <view class='page_desc'>快递单号和快递费用非必填项，若填写快递费用，则会从用户的账户里扣除相应的费用。</view>
+  </view>
+
+  <view class='page__bd'>
+    <!-- 快递地址 -->
+    <view class="weui-panel weui-panel_access">
+      <view class="weui-panel__hd">发货地址</view>
+      <view class="weui-panel__bd">
+        <text class="orders-address-name">收货人: {{address.userName}}</text>
+        <text class="orders-address-phone">电话: {{address.telNumber}}</text>
+        <view class="orders-address-detail">
+          {{address.provinceName + ' ' + address.cityName + ' ' + address.countyName + ' ' + address.detailInfo}}
+        </view>
+      </view>
+      <view class="weui-panel__ft">
+        <view class="weui-cell weui-cell_access weui-cell_link">
+          <view class="weui-cell__bd" bindtap='copyAddress'>复制发货地址</view>
+        </view>
+      </view>
+    </view>
+    <!-- 快递信息表单 -->
+    <form bindsubmit='processOrder'>
+      <view class='weui-cells__title'>快递信息</view>
+      <view class="weui-cells weui-cells_after-title">
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">快递公司</view>
+          </view>
+          <view class="weui-cell__bd">
+            <input name='company' class="weui-input" confirm-type='next' placeholder="请输入快递公司" />
+          </view>
+        </view>
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">快递单号</view>
+          </view>
+          <view class="weui-cell__bd">
+            <input name='num' class="weui-input" confirm-type='next' placeholder="请输入快递单号" />
+          </view>
+        </view>
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">快递费</view>
+          </view>
+          <view class="weui-cell__bd">
+            <input name='fee' class="weui-input" confirm-type='next' placeholder="请输入快递费" />
+          </view>
+        </view>
+      </view>
+      <view class="weui-btn-area">
+        <button form-type="submit" class="weui-btn" type="primary">确定</button>
+      </view>
+    </form>
+  </view>
+</view>

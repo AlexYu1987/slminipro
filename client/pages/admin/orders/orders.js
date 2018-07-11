@@ -1,5 +1,5 @@
 const qcloud = require('../../../vendor/wafer2-client-sdk/index.js')
-const { service: { queryAllOrdersUrl}} = require('../../../config.js')
+const { service: { queryAllOrdersUrl, rollbackOrderUrl}} = require('../../../config.js')
 const sliderWidth = 96; // 需要设置slider的宽度，用于计算中间位置
 
 Page({
@@ -33,7 +33,7 @@ Page({
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function(options) {
+  onShow: function(options) {
     var that = this
     wx.getSystemInfo({
       success: function(res) {
@@ -78,6 +78,40 @@ Page({
     tab.orders = []
     getList(tab)
   },
+
+  rollbackOrder: function(e) {
+    const that = this
+    const orderId = e.currentTarget.id
+
+    wx.showModal({
+      title: '打回订单',
+      content: '订单总金额会返还到用户账户',
+
+      success: () => {
+        qcloud.request({
+          url: rollbackOrderUrl,
+          data: {orderId: orderId},
+
+          success: () => {
+            wx.showToast({
+              title: '已成功取消订单',
+              success: () => {
+                setTimeout(that.onLoad, 2000)
+              }
+            })
+          },
+
+          fail: () => {
+            wx.showModal({
+              title: '取消失败',
+              content: res.data.errMsg,
+            })
+          },
+
+        })
+      }
+    })
+  }
 })
 
 const getList = function(tab) {

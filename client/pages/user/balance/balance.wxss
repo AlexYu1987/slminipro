@@ -1,0 +1,3 @@
+/* pages/user/balance/balance.wxss */
+@import '../../common/weui.wxss';
+@import '../../common/common.wxss';

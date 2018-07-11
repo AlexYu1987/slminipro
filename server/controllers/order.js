@@ -211,7 +211,7 @@ const countUncomplite = async function(ctx, next) {
  * Query all user's order information
  */
 const queryAll = async function(ctx, next) {
-  const {status, offset, limit, order, openId, orderBy} = ctx.request.query
+  const {status, offset, limit, openId, orderBy} = ctx.request.query
 
   if (typeof(Number.parseInt(offset)) != 'number' || typeof(Number.parseInt(limit)) != 'number') {
     throw new Error('缺少参数或参数类型错误')
@@ -232,13 +232,16 @@ const queryAll = async function(ctx, next) {
  */
 const deliver = async function(ctx, next) {
   const {orderId, company, num, fee} = ctx.request.query
+
   if(!orderId || !company) {
     throw new Error('缺少参数')
   }
 
-  if (fee && typeof fee != 'number') {
+  if (fee && typeof(fee) != 'number') {
     throw new Error('参数类型错误')
   }
+
+  if (num && typeof num != 'numb')
 
   await doOrder(orderId, company, num, fee)
   await next()

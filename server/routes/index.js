@@ -34,5 +34,7 @@ router.get('/order/query/all', controllers.order.queryAll)
 router.get('/order/uncomplite/count', controllers.order.countUncomplite)
 router.get('/order/deliver', controllers.order.deliver)
 router.get('/order/rollback', controllers.order.rollback)
+router.get('/order/process', controllers.order.deliver)
+router.get('/order/rollback', controllers.order.rollback)
 
 module.exports = router
