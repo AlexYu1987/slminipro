@@ -50,7 +50,20 @@ const pagedFind = async function(offset, limit) {
   return users
 }
 
+const findById = async function(openId) {
+  let queryClause = 'a.open_id AS openId, a.user_info AS userInfo, b.balance AS balance, b.discount AS discount, \
+    b.role AS role From cSessionInfo a INNER JOIN users b ON(a.open_id = b.openId) WHERE openId = ?'
+  
+  let user = await sequelize.query(queryClause, {
+    type: sequelize.QueryTypes.SELECT,
+    replacements: [openId]
+  })
+
+  return users
+}
+
 module.exports = {
-  updateById,
-  findAll
+  updateUserById,
+  pagedFind,
+  findById,
 }

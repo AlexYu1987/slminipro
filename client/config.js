@@ -16,6 +16,9 @@ var config = {
 
     // 测试的请求地址，用于测试会话
     requestUrl: `${host}/weapp/user`,
+    getAllUserPagedUrl: `${host}/weapp/user/all`,
+    getUserByIdUrl: `${host}/weapp/user/id`,
+    updateUserByIdUrl: `${host}/weapp/user/update`,
 
     // 上传图片接口
     uploadUrl: `${host}/weapp/upload`,

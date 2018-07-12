@@ -1,2 +1,37 @@
 <!--pages/admin/recharge.wxml-->
-<text>pages/admin/recharge.wxml</text>
+<view class='page'>
+
+  <view class='page__hd'>
+    <view class='page__title'>{{user.nickName}}</view>
+    <view class='page_desc'>余额：{{user.nickName}}</view>
+  </view>
+
+  <view class='page__bd'>
+    <!-- 快递信息表单 -->
+    <form bindsubmit='updateUser'>
+      <view class='weui-cells__title'>用户信息</view>
+      <view class="weui-cells weui-cells_after-title">
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">充值金额</view>
+          </view>
+          <view class="weui-cell__bd">
+            <input name='balance' type='digit' class="weui-input" confirm-type='next' value='0' placeholder="请输入充值金额" />
+          </view>
+        </view>
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">折扣</view>
+          </view>
+          <view class="weui-cell__bd">
+            <input name='discount' type='number' value='{{user.discount}}' class="weui-input" confirm-type='next' placeholder="请输入用户折扣" />
+          </view>
+        </view>
+      </view>
+      <view class="weui-btn-area">
+        <button form-type="submit" class="weui-btn" type="primary">确定</button>
+      </view>
+    </form>
+  </view>
+</view>
+

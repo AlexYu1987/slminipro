@@ -1,1 +1,3 @@
 /* pages/admin/recharge.wxss */
+@import '../../common/weui.wxss';
+@import '../../common/common.wxss';

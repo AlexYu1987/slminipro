@@ -11,7 +11,8 @@
     "pages/admin/orders/orders",
     "pages/admin/updategoods/update",
     "pages/admin/send/send",
-    "pages/user/balance/balance"
+    "pages/user/balance/balance",
+    "pages/admin/userList/userList"
   ],
   "window": {
     "navigationBarTextStyle": "#ffffff",
