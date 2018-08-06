@@ -2,25 +2,25 @@
   <view class='weui-form-preview__hd'>
     <view class="weui-form-preview__item">
       <view class="weui-form-preview__label">总额</view>
-      <view class="weui-form-preview__value">{{order.total}}</view>
+      <view class="weui-form-preview__value">{{total}}</view>
     </view>
   </view>
   <view class="weui-form-preview__bd">
     <view class='weui-form-preview__item'>
       <view class="weui-form-preview__label">订单号</view>
-      <view class="weui-form-preview__value address">¥{{order.id}}</view>
+      <view class="weui-form-preview__value address">¥{{id}}</view>
     </view>
     <view class='weui-form-preview__item'>
       <view class="weui-form-preview__label">下单时间</view>
-      <view class="weui-form-preview__value address">¥{{order.createTime}}</view>
+      <view class="weui-form-preview__value address">¥{{createTime}}</view>
     </view>
     <view class='weui-form-preview__item'>
       <view class="weui-form-preview__label">收货地址</view>
-      <view class="weui-form-preview__value address"> {{item.address.province + ' ' + item.address.city + ' ' + item.address.distribute + ' ' + item.address.street + ' ' + item.address.name + ' 收 ' + '电话 ' + item.address.phone}}</view>
+      <view class="weui-form-preview__value address"> {{address.province + ' ' + address.city + ' ' + address.distribute + ' ' + address.street + ' ' + address.name + ' 收 ' + '电话 ' + address.phone}}</view>
     </view>
     <view wx:for='{{order.details}}' wx:key="index" class="weui-form-preview__item">
-      <view class="weui-form-preview__label">{{item.commodity.name}} X {{item.count}} 件</view>
-      <view class="weui-form-preview__value">总额：{{item.cost}}</view>
+      <view class="weui-form-preview__label">{{commodity.name}} X {{count}} 件</view>
+      <view class="weui-form-preview__value">总额：{{cost}}</view>
     </view>
   </view>
 </template>
